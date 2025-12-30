@@ -11,12 +11,12 @@ const Menu = () => {
       <Link to='/' style={padding}>
         anecdotes
       </Link>
-      <Link to='/create_new' style={padding}>
+      <Link to='/create' style={padding}>
         create new
       </Link>
-      <a href='#' style={padding}>
+      <Link to='/about' style={padding}>
         about
-      </a>
+      </Link>
     </div>
   );
 };
@@ -157,15 +157,12 @@ const App = () => {
       <h1>Software anecdotes</h1>
       <Menu />
 
-      {/* <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
-      <Footer /> */}
-
       <Routes>
         <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path='/create_new' element={<CreateNew addNew={addNew} />} />
+        <Route path='/create' element={<CreateNew addNew={addNew} />} />
+        <Route path='/about' element={<About />} />
       </Routes>
+      <Footer />
     </div>
   );
 };
