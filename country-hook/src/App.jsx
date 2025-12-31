@@ -18,7 +18,25 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null);
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (!name) return;
+
+    (async () => {
+      try {
+        const response = await axios.get(
+          `https://studies.cs.helsinki.fi/restcountries/api/name/${name}`
+        );
+
+        response.found = true;
+
+        console.log(response);
+        setCountry(response);
+      } catch (error) {
+        console.log(error.message);
+        setCountry({ found: false });
+      }
+    })();
+  }, [name]);
 
   return country;
 };
@@ -32,15 +50,17 @@ const Country = ({ country }) => {
     return <div>not found...</div>;
   }
 
+  // There are some change on how the data is rendered due to
+  // the structure of the response
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div>
+      <h3>{country?.data?.name?.common} </h3>
+      <div>capital {country?.data?.capital} </div>
+      <div>population {country?.data?.population}</div>
       <img
-        src={country.data.flag}
+        src={country?.data?.flags?.png}
         height='100'
-        alt={`flag of ${country.data.name}`}
+        alt={`flag of ${country?.data?.name}`}
       />
     </div>
   );
@@ -50,6 +70,8 @@ const App = () => {
   const nameInput = useField('text');
   const [name, setName] = useState('');
   const country = useCountry(name);
+
+  // console.log(country);
 
   const fetch = (e) => {
     e.preventDefault();
