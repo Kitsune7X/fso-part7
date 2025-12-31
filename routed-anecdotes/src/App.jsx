@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route, Link, useMatch, useNavigate } from 'react-router-dom';
 import { useField } from './hooks';
-import { use } from 'react';
 
 const Menu = () => {
   const padding = {
@@ -112,6 +111,7 @@ const CreateNew = (props) => {
     props.handleNotification(`a new anecdote "${content.value}" created`);
   };
 
+  // https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/reset_event
   const handleReset = () => {
     resetContent();
     resetAuthor();
@@ -121,7 +121,7 @@ const CreateNew = (props) => {
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
           <input {...contentInputProps} />
@@ -135,9 +135,7 @@ const CreateNew = (props) => {
           <input {...infoInputProps} />
         </div>
         <button>create</button>
-        <button type='button' onClick={handleReset}>
-          reset
-        </button>
+        <button type='reset'>reset</button>
       </form>
     </div>
   );
