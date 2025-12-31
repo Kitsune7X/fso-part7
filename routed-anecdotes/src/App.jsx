@@ -83,12 +83,18 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
-  // const [content, setContent] = useState('');
-  // const [author, setAuthor] = useState('');
-  // const [info, setInfo] = useState('');
   const content = useField('content');
   const author = useField('author');
   const info = useField('info');
+
+  // https://legacy.reactjs.org/warnings/unknown-prop.html
+  // Use spread syntax to pull variables off props and put the
+  // remaining props into a variable
+  // https://dmitripavlutin.com/javascript-object-destructuring/
+  // Destructure and use an alias for the pulled off property
+  const { reset: resetContent, ...contentInputProps } = content;
+  const { reset: resetAuthor, ...authorInputProps } = author;
+  const { reset: resetInfo, ...infoInputProps } = info;
 
   const navigate = useNavigate();
 
@@ -106,23 +112,32 @@ const CreateNew = (props) => {
     props.handleNotification(`a new anecdote "${content.value}" created`);
   };
 
+  const handleReset = () => {
+    resetContent();
+    resetAuthor();
+    resetInfo();
+  };
+
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...contentInputProps} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...authorInputProps} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...infoInputProps} />
         </div>
         <button>create</button>
+        <button type='button' onClick={handleReset}>
+          reset
+        </button>
       </form>
     </div>
   );
