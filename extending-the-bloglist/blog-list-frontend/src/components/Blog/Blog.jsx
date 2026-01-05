@@ -28,7 +28,7 @@ const Blog = ({ blog, setError, displayNotification, handleDeleteBlog }) => {
     } catch (error) {
       console.log(error.response.data.error);
 
-      setError(true);
+      setError({ type: 'SET_ERROR' });
       displayNotification(`${error.response.data.error}`);
     }
   };
@@ -41,8 +41,8 @@ const Blog = ({ blog, setError, displayNotification, handleDeleteBlog }) => {
         </span>
         <button
           onClick={() => setMoreDetail(!moreDetail)}
-          type='button'
-          data-testid='detail-btn'
+          type="button"
+          data-testid="detail-btn"
         >
           {moreDetail ? 'Hide' : 'View'}
         </button>
@@ -50,10 +50,10 @@ const Blog = ({ blog, setError, displayNotification, handleDeleteBlog }) => {
 
       {moreDetail && (
         <div>
-          <a href='#'>{blog.url}</a>
+          <a href="#">{blog.url}</a>
           <div>
-            <span data-testid='likes-count'>Likes: {likes}</span>
-            <button onClick={addLikes} type='button'>
+            <span data-testid="likes-count">Likes: {likes}</span>
+            <button onClick={addLikes} type="button">
               Like
             </button>
           </div>
@@ -67,7 +67,7 @@ const Blog = ({ blog, setError, displayNotification, handleDeleteBlog }) => {
                   ? handleDeleteBlog(blog)
                   : displayNotification('No changes have been made');
               }}
-              type='button'
+              type="button"
             >
               Remove
             </button>

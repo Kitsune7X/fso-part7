@@ -1,4 +1,4 @@
-import { test, describe, beforeEach, expect } from 'vitest';
+import { test, describe, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Notification from './Notification';

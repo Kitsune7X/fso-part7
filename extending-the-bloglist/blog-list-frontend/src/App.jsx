@@ -8,13 +8,30 @@ import VisibilityToggle from './components/VisibilityToggle/VisibilityToggle';
 
 // TODO: Use `useReducer` and context to manage the notification data
 const App = () => {
-  const notificationReducer = (state, action) => {
+  const notificationReducer = (_state, action) => {
     switch (action.type) {
       case 'DISPLAY_NOTIFICATION': {
         return action.payload;
       }
       case 'CLEAR_NOTIFICATION': {
         return null;
+      }
+      default: {
+        throw new Error('Unknown action: ' + action.type);
+      }
+    }
+  };
+
+  const errorReducer = (_state, action) => {
+    switch (action.type) {
+      case 'SET_ERROR': {
+        return true;
+      }
+      case 'CLEAR_ERROR': {
+        return false;
+      }
+      default: {
+        throw new Error('Unknown action: ' + action.type);
       }
     }
   };
@@ -24,7 +41,7 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [message, dispatchMessage] = useReducer(notificationReducer, null);
-  const [error, setError] = useState(false);
+  const [error, dispatchError] = useReducer(errorReducer, false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -52,7 +69,7 @@ const App = () => {
   const displayNotification = (message) => {
     dispatchMessage({ type: 'DISPLAY_NOTIFICATION', payload: message });
     setTimeout(() => {
-      setError(false);
+      dispatchError({ type: 'CLEAR_ERROR' });
 
       dispatchMessage({ type: 'CLEAR_NOTIFICATION' });
     }, 5000);
@@ -76,7 +93,7 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch {
-      setError(true);
+      dispatchError({ type: 'SET_ERROR' });
 
       displayNotification('Wrong username or password');
     }
@@ -109,7 +126,7 @@ const App = () => {
     } catch (error) {
       console.log(error.response.data.error);
 
-      setError(true);
+      dispatchError({ type: 'SET_ERROR' });
       displayNotification(`${error.response.data.error}`);
     }
   };
@@ -126,7 +143,7 @@ const App = () => {
     } catch (error) {
       console.log(error.response.data.error);
 
-      setError(true);
+      dispatchError({ type: 'SET_ERROR' });
       displayNotification(`${error.response.data.error}`);
     }
   };
@@ -173,7 +190,7 @@ const App = () => {
             <Blog
               key={blog.id}
               blog={blog}
-              setError={setError}
+              setError={dispatchError}
               displayNotification={displayNotification}
               handleDeleteBlog={handleDeleteBlog}
             />
