@@ -87,7 +87,7 @@ const App = () => {
       // console.log(addedBlog);
 
       displayNotification(
-        `A new blog ${addedBlog.title} by ${addedBlog.author} is added`
+        `A new blog ${addedBlog.title} by ${addedBlog.author} is added`,
       );
 
       blogFormRef.current.toggleChildrenVisibility();
@@ -127,7 +127,7 @@ const App = () => {
         <label>
           username
           <input
-            type='text'
+            type="text"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
           />
@@ -138,14 +138,14 @@ const App = () => {
         <label>
           password
           <input
-            type='password'
+            type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
         </label>
       </div>
 
-      <button type='submit'>Login</button>
+      <button type="submit">Login</button>
     </form>
   );
 
@@ -153,7 +153,7 @@ const App = () => {
   const blogDisplay = () => (
     <div>
       <h2>Blogs</h2>
-      <div id='blog-container'>
+      <div id="blog-container">
         {blogs
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
@@ -183,7 +183,7 @@ const App = () => {
           <p>{user.name} is logged in.</p>
           <button onClick={handleLogout}>logout</button>
 
-          <VisibilityToggle buttonLabel='Create new Blog' ref={blogFormRef}>
+          <VisibilityToggle buttonLabel="Create new Blog" ref={blogFormRef}>
             <BlogEditor createBlog={handleAddBlog} />
           </VisibilityToggle>
 
