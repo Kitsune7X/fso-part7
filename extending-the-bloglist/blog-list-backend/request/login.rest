@@ -1,0 +1,17 @@
+### Log user `kitsune` in
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "kitsune",
+  "password": "foxvillage"
+}
+
+### Log user `Fox` in
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "Fox-kun",
+  "password": "foxvillage"
+}

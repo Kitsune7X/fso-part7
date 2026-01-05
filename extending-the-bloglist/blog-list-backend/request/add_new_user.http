@@ -1,0 +1,47 @@
+### POST request to add a new user
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "kitsune",
+  "name": "KITSUNE",
+  "password": "foxvillage"
+}
+
+### POST request with missing username
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "name": "Fish",
+  "password": "fishland"
+}
+
+### POST request with missing password
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "Fish",
+  "name": "Fish"
+}
+
+### POST request with shorter than 3 characters username
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "Fi",
+  "name": "Fish",
+  "password": "fishland"
+}
+
+### POST request with shorter than 3 characters password
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "Fish",
+  "name": "FISH",
+  "password": "fi"
+}

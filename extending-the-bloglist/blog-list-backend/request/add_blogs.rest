@@ -1,0 +1,65 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "FOX--Blog",
+  "url": "www.fox-kun.com"
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "FOX-SSS",
+  "author": "FOX-kun",
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpdHN1bmUiLCJpZCI6IjY5Mjg3NDdlYWU5YWRhYzE5YTc1MGYxMSIsImlhdCI6MTc2NDQzMzA0NX0.ZbK2O9d2uypOQc_15rCdlvnbZRzCeu7vtMv-JB3ANJE
+
+{
+  "title": "Art in Motion: The Charismatic Enigma",
+  "author": "Jeff Hardy",
+  "url": "https://wwe.com/articles/jeff-hardy-art-in-motion",
+  "likes": 22,
+  "userId": "6928747eae9adac19a750f11"
+}
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpdHN1bmUiLCJpZCI6IjY5Mjg3NDdlYWU5YWRhYzE5YTc1MGYxMSIsImlhdCI6MTc2NDQzMzA0NX0.ZbK2O9d2uypOQc_15rCdlvnbZRzCeu7vtMv-JB3ANJE
+
+{
+  "title": "Art in Motion: The Charismatic Enigma",
+  "author": "Jeff Hardy",
+  "url": "https://wwe.com/articles/jeff-hardy-art-in-motion",
+  "likes": 22,
+  "userId": "6928747eae9adac19a750f11"
+}
+
+### Add new blog without user for tests
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Art in Motion: The Charismatic Enigma",
+  "author": "Jeff Hardy",
+  "url": "https://wwe.com/articles/jeff-hardy-art-in-motion",
+  "likes": 22  
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Cena: From Prototype to Icon",
+  "author": "John Cena",
+  "url": "https://wwe.com/articles/cena-icon",
+  "likes": 7  
+}
