@@ -6,6 +6,7 @@ import Notification from './components/Notification/Notification';
 import BlogEditor from './components/BlogEditor/BlogEditor';
 import VisibilityToggle from './components/VisibilityToggle/VisibilityToggle';
 
+// TODO: Use `useReducer` and context to manage the notification data
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
