@@ -5,6 +5,10 @@ import loginService from './services/login';
 import Notification from './components/Notification/Notification';
 import BlogEditor from './components/BlogEditor/BlogEditor';
 import VisibilityToggle from './components/VisibilityToggle/VisibilityToggle';
+import {
+  NotificationContext,
+  NotificationDispatchContext,
+} from './notificationContext';
 
 // TODO: Use `useReducer` and context to manage the notification data
 const App = () => {
@@ -204,23 +208,25 @@ const App = () => {
   // ==============================
 
   return (
-    <div>
-      <h1>Blog App</h1>
-      {message && <Notification message={message} isError={error} />}
-      {!user && loginForm()}
-      {user && (
+    <NotificationContext value={message}>
+      <NotificationDispatchContext value={dispatchMessage}>
         <div>
-          <p>{user.name} is logged in.</p>
-          <button onClick={handleLogout}>logout</button>
-
-          <VisibilityToggle buttonLabel="Create new Blog" ref={blogFormRef}>
-            <BlogEditor createBlog={handleAddBlog} />
-          </VisibilityToggle>
-
-          {blogDisplay()}
+          <h1>Blog App</h1>
+          {message && <Notification isError={error} />}
+          {!user && loginForm()}
+          {user && (
+            <div>
+              <p>{user.name} is logged in.</p>
+              <button onClick={handleLogout}>logout</button>
+              <VisibilityToggle buttonLabel="Create new Blog" ref={blogFormRef}>
+                <BlogEditor createBlog={handleAddBlog} />
+              </VisibilityToggle>
+              {blogDisplay()}
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </NotificationDispatchContext>
+    </NotificationContext>
   );
 };
 
