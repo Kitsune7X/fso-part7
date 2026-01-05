@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useReducer } from 'react';
 import Blog from './components/Blog/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -8,11 +8,22 @@ import VisibilityToggle from './components/VisibilityToggle/VisibilityToggle';
 
 // TODO: Use `useReducer` and context to manage the notification data
 const App = () => {
+  const notificationReducer = (state, action) => {
+    switch (action.type) {
+      case 'DISPLAY_NOTIFICATION': {
+        return action.payload;
+      }
+      case 'CLEAR_NOTIFICATION': {
+        return null;
+      }
+    }
+  };
+
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [message, dispatchMessage] = useReducer(notificationReducer, null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -37,12 +48,13 @@ const App = () => {
   // * Function — START
   // ==============================
   // ---------- Display Notification ----------
+
   const displayNotification = (message) => {
-    setMessage(message);
+    dispatchMessage({ type: 'DISPLAY_NOTIFICATION', payload: message });
     setTimeout(() => {
       setError(false);
 
-      setMessage(null);
+      dispatchMessage({ type: 'CLEAR_NOTIFICATION' });
     }, 5000);
   };
 

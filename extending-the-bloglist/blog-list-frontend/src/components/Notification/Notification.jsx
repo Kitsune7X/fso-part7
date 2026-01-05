@@ -7,6 +7,3 @@ const Notification = ({ message, isError = false }) => (
 );
 
 export default Notification;
-
-// TODO: write unit test for `Notification` Component so that after
-// refactoring, it still works
