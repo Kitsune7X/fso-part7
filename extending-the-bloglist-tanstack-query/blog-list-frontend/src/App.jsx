@@ -11,6 +11,8 @@ import {
 } from './notificationContext';
 
 // TODO: Use `useReducer` and context to manage the notification data
+
+// TODO: Refactor code, combining notification and error in one reducer
 const App = () => {
   const notificationReducer = (_state, action) => {
     switch (action.type) {
@@ -44,10 +46,16 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [notification, dispatchNotification] = useReducer(
-    notificationReducer,
-    null,
-  );
+
+  // TODO: Notification reducer now contain an object that store message and error state
+  const [notification, dispatchNotification] = useReducer(notificationReducer, {
+    message: null,
+    isError: false,
+  });
+
+  console.log(notification);
+  console.log(notification === false);
+
   const [error, dispatchError] = useReducer(errorReducer, false);
 
   useEffect(() => {
@@ -208,7 +216,7 @@ const App = () => {
       <NotificationDispatchContext value={dispatchNotification}>
         <div>
           <h1>Blog App</h1>
-          {notification && <Notification isError={error} />}
+          {notification.message && <Notification isError={error} />}
           {!user && loginForm()}
           {user && (
             <div>
