@@ -44,7 +44,10 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [message, dispatchMessage] = useReducer(notificationReducer, null);
+  const [notification, dispatchNotification] = useReducer(
+    notificationReducer,
+    null,
+  );
   const [error, dispatchError] = useReducer(errorReducer, false);
 
   useEffect(() => {
@@ -68,11 +71,11 @@ const App = () => {
   // ---------- Display Notification ----------
 
   const displayNotification = (message) => {
-    dispatchMessage({ type: 'DISPLAY_NOTIFICATION', payload: message });
+    dispatchNotification({ type: 'DISPLAY_NOTIFICATION', payload: message });
     setTimeout(() => {
       dispatchError({ type: 'CLEAR_ERROR' });
 
-      dispatchMessage({ type: 'CLEAR_NOTIFICATION' });
+      dispatchNotification({ type: 'CLEAR_NOTIFICATION' });
     }, 5000);
   };
 
@@ -201,11 +204,11 @@ const App = () => {
   );
 
   return (
-    <NotificationContext value={message}>
-      <NotificationDispatchContext value={dispatchMessage}>
+    <NotificationContext value={notification}>
+      <NotificationDispatchContext value={dispatchNotification}>
         <div>
           <h1>Blog App</h1>
-          {message && <Notification isError={error} />}
+          {notification && <Notification isError={error} />}
           {!user && loginForm()}
           {user && (
             <div>
