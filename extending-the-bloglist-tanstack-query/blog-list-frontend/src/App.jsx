@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -10,10 +10,9 @@ import {
   useNotificationDispatchContext,
 } from './notificationContext';
 
-// TODO: Use `useReducer` and context to manage the notification data
-
-// TODO: Refactor code, combining notification and error in one reducer
 const App = () => {
+  // TODO: Use Tanstack query to manage blogs state
+
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
