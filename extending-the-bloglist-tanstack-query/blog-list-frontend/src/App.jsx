@@ -5,25 +5,26 @@ import loginService from './services/login';
 import Notification from './components/Notification/Notification';
 import BlogEditor from './components/BlogEditor/BlogEditor';
 import VisibilityToggle from './components/VisibilityToggle/VisibilityToggle';
+
 import {
   useNotificationContext,
   useNotificationDispatchContext,
 } from './notificationContext';
 
-const App = () => {
-  // TODO: Use Tanstack query to manage blogs state
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-  const [blogs, setBlogs] = useState([]);
+import { baseUrl } from './services/blogs';
+
+const App = () => {
+  // Access the client provided by the `QueryClientProvider`
+  const queryClient = useQueryClient();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
   const notification = useNotificationContext();
   const dispatchNotification = useNotificationDispatchContext();
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
 
   // If the user is logged in, set user so that user stay logged in
   useEffect(() => {
@@ -38,6 +39,22 @@ const App = () => {
   }, []);
 
   const blogFormRef = useRef(null);
+
+  // Query for blogs
+  const blogQuery = useQuery({
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+  });
+
+  const blogs = blogQuery.data;
+
+  if (blogQuery.isPending) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (blogQuery.isError) {
+    return <span>Error: {blogQuery.error.message}</span>;
+  }
 
   // ---------- Display Notification ----------
 
@@ -160,7 +177,7 @@ const App = () => {
       <h2>Blogs</h2>
       <div id="blog-container">
         {blogs
-          .sort((a, b) => b.likes - a.likes)
+          ?.sort((a, b) => b.likes - a.likes)
           .map((blog) => (
             <Blog
               key={blog.id}
