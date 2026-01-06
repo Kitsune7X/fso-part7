@@ -13,7 +13,8 @@ import {
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { baseUrl } from './services/blogs';
+// Variable to make sure useEffect only run once to check for existing user
+let didInit = false;
 
 const App = () => {
   // Access the client provided by the `QueryClientProvider`
@@ -28,13 +29,16 @@ const App = () => {
 
   // If the user is logged in, set user so that user stay logged in
   useEffect(() => {
-    const user = JSON.parse(window.localStorage.getItem('loggedInUser'));
+    if (!didInit) {
+      didInit = true;
+      const user = JSON.parse(window.localStorage.getItem('loggedInUser'));
 
-    // console.log(user);
+      // console.log(user);
 
-    if (user) {
-      setUser(user);
-      blogService.setToken(user.token);
+      if (user) {
+        setUser(user);
+        blogService.setToken(user.token);
+      }
     }
   }, []);
 
