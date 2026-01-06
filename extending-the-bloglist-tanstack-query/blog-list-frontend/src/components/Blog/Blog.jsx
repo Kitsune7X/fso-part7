@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './Blog.module.css';
 import blogService from '../../services/blogs';
 
-const Blog = ({ blog, setError, displayNotification, handleDeleteBlog }) => {
+const Blog = ({ blog, displayNotification, handleDeleteBlog }) => {
   const [moreDetail, setMoreDetail] = useState(false);
   const [likes, setLikes] = useState(blog.likes);
 
@@ -28,8 +28,7 @@ const Blog = ({ blog, setError, displayNotification, handleDeleteBlog }) => {
     } catch (error) {
       console.log(error.response.data.error);
 
-      setError({ type: 'SET_ERROR' });
-      displayNotification(`${error.response.data.error}`);
+      displayNotification(`${error.response.data.error}`, true);
     }
   };
 

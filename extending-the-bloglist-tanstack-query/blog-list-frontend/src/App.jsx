@@ -20,7 +20,7 @@ const App = () => {
         return action.payload;
       }
       case 'CLEAR_NOTIFICATION': {
-        return null;
+        return { message: null, isError: false };
       }
       default: {
         throw new Error('Unknown action: ' + action.type);
@@ -28,19 +28,19 @@ const App = () => {
     }
   };
 
-  const errorReducer = (_state, action) => {
-    switch (action.type) {
-      case 'SET_ERROR': {
-        return true;
-      }
-      case 'CLEAR_ERROR': {
-        return false;
-      }
-      default: {
-        throw new Error('Unknown action: ' + action.type);
-      }
-    }
-  };
+  // const errorReducer = (_state, action) => {
+  //   switch (action.type) {
+  //     case 'SET_ERROR': {
+  //       return true;
+  //     }
+  //     case 'CLEAR_ERROR': {
+  //       return false;
+  //     }
+  //     default: {
+  //       throw new Error('Unknown action: ' + action.type);
+  //     }
+  //   }
+  // };
 
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
@@ -53,10 +53,7 @@ const App = () => {
     isError: false,
   });
 
-  console.log(notification);
-  console.log(notification === false);
-
-  const [error, dispatchError] = useReducer(errorReducer, false);
+  // const [error, dispatchError] = useReducer(errorReducer, false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -78,11 +75,15 @@ const App = () => {
 
   // ---------- Display Notification ----------
 
-  const displayNotification = (message) => {
-    dispatchNotification({ type: 'DISPLAY_NOTIFICATION', payload: message });
+  const displayNotification = (message, isError = false) => {
+    dispatchNotification({
+      type: 'DISPLAY_NOTIFICATION',
+      payload: {
+        message,
+        isError,
+      },
+    });
     setTimeout(() => {
-      dispatchError({ type: 'CLEAR_ERROR' });
-
       dispatchNotification({ type: 'CLEAR_NOTIFICATION' });
     }, 5000);
   };
@@ -105,9 +106,9 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch {
-      dispatchError({ type: 'SET_ERROR' });
+      // dispatchError({ type: 'SET_ERROR' });
 
-      displayNotification('Wrong username or password');
+      displayNotification('Wrong username or password', true);
     }
   };
 
@@ -138,8 +139,7 @@ const App = () => {
     } catch (error) {
       console.log(error.response.data.error);
 
-      dispatchError({ type: 'SET_ERROR' });
-      displayNotification(`${error.response.data.error}`);
+      displayNotification(`${error.response.data.error}`, true);
     }
   };
 
@@ -155,8 +155,7 @@ const App = () => {
     } catch (error) {
       console.log(error.response.data.error);
 
-      dispatchError({ type: 'SET_ERROR' });
-      displayNotification(`${error.response.data.error}`);
+      displayNotification(`${error.response.data.error}`, true);
     }
   };
 
@@ -202,7 +201,6 @@ const App = () => {
             <Blog
               key={blog.id}
               blog={blog}
-              setError={dispatchError}
               displayNotification={displayNotification}
               handleDeleteBlog={handleDeleteBlog}
             />
@@ -216,7 +214,9 @@ const App = () => {
       <NotificationDispatchContext value={dispatchNotification}>
         <div>
           <h1>Blog App</h1>
-          {notification.message && <Notification isError={error} />}
+          {notification.message && (
+            <Notification isError={notification.isError} />
+          )}
           {!user && loginForm()}
           {user && (
             <div>
