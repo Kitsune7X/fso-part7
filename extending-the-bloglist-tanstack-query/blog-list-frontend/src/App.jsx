@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useReducer } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import Blog from './components/Blog/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -14,46 +14,13 @@ import {
 
 // TODO: Refactor code, combining notification and error in one reducer
 const App = () => {
-  const notificationReducer = (_state, action) => {
-    switch (action.type) {
-      case 'DISPLAY_NOTIFICATION': {
-        return action.payload;
-      }
-      case 'CLEAR_NOTIFICATION': {
-        return { message: null, isError: false };
-      }
-      default: {
-        throw new Error('Unknown action: ' + action.type);
-      }
-    }
-  };
-
-  // const errorReducer = (_state, action) => {
-  //   switch (action.type) {
-  //     case 'SET_ERROR': {
-  //       return true;
-  //     }
-  //     case 'CLEAR_ERROR': {
-  //       return false;
-  //     }
-  //     default: {
-  //       throw new Error('Unknown action: ' + action.type);
-  //     }
-  //   }
-  // };
-
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
-  // TODO: Notification reducer now contain an object that store message and error state
-  const [notification, dispatchNotification] = useReducer(notificationReducer, {
-    message: null,
-    isError: false,
-  });
-
-  // const [error, dispatchError] = useReducer(errorReducer, false);
+  const notification = useContext(NotificationContext);
+  const dispatchNotification = useContext(NotificationDispatchContext);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -106,8 +73,6 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch {
-      // dispatchError({ type: 'SET_ERROR' });
-
       displayNotification('Wrong username or password', true);
     }
   };
@@ -210,27 +175,21 @@ const App = () => {
   );
 
   return (
-    <NotificationContext value={notification}>
-      <NotificationDispatchContext value={dispatchNotification}>
+    <div>
+      <h1>Blog App</h1>
+      {notification.message && <Notification />}
+      {!user && loginForm()}
+      {user && (
         <div>
-          <h1>Blog App</h1>
-          {notification.message && (
-            <Notification isError={notification.isError} />
-          )}
-          {!user && loginForm()}
-          {user && (
-            <div>
-              <p>{user.name} is logged in.</p>
-              <button onClick={handleLogout}>logout</button>
-              <VisibilityToggle buttonLabel="Create new Blog" ref={blogFormRef}>
-                <BlogEditor createBlog={handleAddBlog} />
-              </VisibilityToggle>
-              {blogDisplay()}
-            </div>
-          )}
+          <p>{user.name} is logged in.</p>
+          <button onClick={handleLogout}>logout</button>
+          <VisibilityToggle buttonLabel="Create new Blog" ref={blogFormRef}>
+            <BlogEditor createBlog={handleAddBlog} />
+          </VisibilityToggle>
+          {blogDisplay()}
         </div>
-      </NotificationDispatchContext>
-    </NotificationContext>
+      )}
+    </div>
   );
 };
 

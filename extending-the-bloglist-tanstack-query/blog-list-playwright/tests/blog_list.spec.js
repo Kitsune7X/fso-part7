@@ -96,6 +96,7 @@ describe('Blog app', () => {
       );
 
       await expect(page.getByText('A blog by FOX FoxyView')).toBeVisible();
+      await expect(page.getByText('A new blog A blog by FOX by')).toBeVisible();
     });
 
     describe('When blog detail is opened', () => {
@@ -135,12 +136,24 @@ describe('Blog app', () => {
         const blogDetailDiv = page.getByText(
           'A blog by USAGI UsagiHidehttps://www.usagi-blog.comLikes: 0LikeUser: foxyRemove'
         );
+
+        console.log(blogDetailDiv);
         page.on('dialog', async (dialog) => {
           await dialog.accept();
         });
         await page.getByRole('button', { name: 'Remove' }).first().click();
 
-        await expect(blogDetailDiv).toBeHidden();
+        await expect(
+          page.getByText(
+            'A blog by USAGI UsagiHidehttps://www.usagi-blog.comLikes: 0LikeUser: foxyRemove'
+          )
+        ).toBeHidden();
+
+        await expect(
+          page
+            .locator('div')
+            .filter({ hasText: /^A blog by USAGI has been deleted$/ })
+        ).toBeVisible();
       });
 
       test('only the user who added the blog can see the blog delete button', async ({
