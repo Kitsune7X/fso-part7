@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { NotificationContextProvider } from './notificationContext';
+import { NotificationContextProvider } from './NotificationContextProvider';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <NotificationContextProvider>

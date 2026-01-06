@@ -6,8 +6,8 @@ import Notification from './components/Notification/Notification';
 import BlogEditor from './components/BlogEditor/BlogEditor';
 import VisibilityToggle from './components/VisibilityToggle/VisibilityToggle';
 import {
-  NotificationContext,
-  NotificationDispatchContext,
+  useNotificationContext,
+  useNotificationDispatchContext,
 } from './notificationContext';
 
 // TODO: Use `useReducer` and context to manage the notification data
@@ -19,8 +19,8 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
-  const notification = useContext(NotificationContext);
-  const dispatchNotification = useContext(NotificationDispatchContext);
+  const notification = useNotificationContext();
+  const dispatchNotification = useNotificationDispatchContext();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));

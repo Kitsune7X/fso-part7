@@ -1,40 +1,27 @@
-import { createContext, useReducer } from 'react';
+import { createContext, useContext } from 'react';
 
 // TODO: Extract the reducer into the Context
 export const NotificationContext = createContext(null);
 export const NotificationDispatchContext = createContext(null);
 
-// TODO: Declare a NotificationProvider to manage the state,
-// provide contexts for components below
-// take children as prop
+export const useNotificationContext = () => {
+  const context = useContext(NotificationContext);
+  if (!context) {
+    throw new Error(
+      'useNotificationContext need to be used inside NotificationContextProvider',
+    );
+  }
 
-export const NotificationContextProvider = ({ children }) => {
-  const initialState = { message: null, isError: false };
+  return context;
+};
 
-  const notificationReducer = (_state, action) => {
-    switch (action.type) {
-      case 'DISPLAY_NOTIFICATION': {
-        return action.payload;
-      }
-      case 'CLEAR_NOTIFICATION': {
-        return initialState;
-      }
-      default: {
-        throw new Error('Unknown action: ' + action.type);
-      }
-    }
-  };
+export const useNotificationDispatchContext = () => {
+  const context = useContext(NotificationDispatchContext);
+  if (!context) {
+    throw new Error(
+      'useNotificationDispatchContext need to be used inside NotificationContextProvider',
+    );
+  }
 
-  const [notification, dispatchNotification] = useReducer(
-    notificationReducer,
-    initialState,
-  );
-
-  return (
-    <NotificationContext value={notification}>
-      <NotificationDispatchContext value={dispatchNotification}>
-        {children}
-      </NotificationDispatchContext>
-    </NotificationContext>
-  );
+  return context;
 };

@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import styles from './Notification.module.css';
-import { NotificationContext } from '../../notificationContext';
+import { useNotificationContext } from '../../notificationContext';
 
 const Notification = () => {
   // Deconstruct message now since the value of the context is now an object
-  const { message, isError } = useContext(NotificationContext);
+  const { message, isError } = useNotificationContext();
 
   return (
     <div className={`${styles.notification} ${isError ? styles.error : ''}`}>
