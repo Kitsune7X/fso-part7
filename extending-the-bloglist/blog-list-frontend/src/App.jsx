@@ -65,9 +65,6 @@ const App = () => {
 
   const blogFormRef = useRef(null);
 
-  // ==============================
-  // * Function — START
-  // ==============================
   // ---------- Display Notification ----------
 
   const displayNotification = (message) => {
@@ -202,10 +199,6 @@ const App = () => {
       </div>
     </div>
   );
-
-  // ==============================
-  // * Function — END
-  // ==============================
 
   return (
     <NotificationContext value={message}>
