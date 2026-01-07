@@ -1,4 +1,6 @@
 import axios from 'axios';
+
+// Using relative path since we set up proxy with vite config
 export const baseUrl = '/api/blogs';
 
 let token = null;

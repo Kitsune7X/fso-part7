@@ -11,7 +11,7 @@ import {
   useNotificationDispatchContext,
 } from './notificationContext';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Variable to make sure useEffect only run once to check for existing user
 let didInit = false;
@@ -32,7 +32,6 @@ const App = () => {
     if (!didInit) {
       didInit = true;
       const user = JSON.parse(window.localStorage.getItem('loggedInUser'));
-
       // console.log(user);
 
       if (user) {
@@ -48,6 +47,21 @@ const App = () => {
   const blogQuery = useQuery({
     queryKey: ['blogs'],
     queryFn: blogService.getAll,
+  });
+
+  // Set up blog query mutation
+  const blogMutation = useMutation({
+    mutationFn: blogService.create,
+    onSuccess: async (addedBlog) => {
+      await queryClient.invalidateQueries({ queryKey: ['blogs'] });
+
+      displayNotification(
+        `A new blog ${addedBlog?.title} by ${addedBlog?.author} is added`,
+      );
+    },
+    onError: (error) => {
+      displayNotification(error.message, true);
+    },
   });
 
   const blogs = blogQuery.data;
@@ -107,25 +121,22 @@ const App = () => {
   };
 
   // ---------- Handle Add Blog ----------
+  // Use Tanstack query to handle adding blog
   const handleAddBlog = async (newBlog) => {
-    // console.log(newBlog);
-    try {
-      const addedBlog = await blogService.create(newBlog);
+    blogMutation.mutate(newBlog);
 
-      // console.log(addedBlog);
+    // To get the returned data from useMutation
+    // https://stackoverflow.com/questions/75222161/how-to-return-data-from-tanstack-react-query-usemutation
 
-      displayNotification(
-        `A new blog ${addedBlog.title} by ${addedBlog.author} is added`,
-      );
+    // {
+    //   blogMutation.isError
+    //     ? displayNotification(`${blogMutation.error.message}`, true)
+    //     : displayNotification(
+    //         `A new blog ${blogMutation?.data?.title} by ${blogMutation?.data?.author} is added`,
+    //       );
+    // }
 
-      blogFormRef.current.toggleChildrenVisibility();
-
-      setBlogs([...blogs, addedBlog]);
-    } catch (error) {
-      console.log(error.response.data.error);
-
-      displayNotification(`${error.response.data.error}`, true);
-    }
+    blogFormRef.current.toggleChildrenVisibility();
   };
 
   // ---------- Delete Blog ----------

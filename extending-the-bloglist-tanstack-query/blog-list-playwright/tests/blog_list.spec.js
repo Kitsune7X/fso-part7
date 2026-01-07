@@ -99,6 +99,19 @@ describe('Blog app', () => {
       await expect(page.getByText('A new blog A blog by FOX by')).toBeVisible();
     });
 
+    test('blog creation failed when there are missing fields', async ({
+      page,
+    }) => {
+      // await createBlog(page, '', 'Foxy', 'https://www.fox-blog.com');
+      await page.getByRole('button', { name: /create new blog/i }).click();
+      await page.getByLabel(/author/i).fill('Foxy');
+      await page.getByLabel(/url/i).fill('https://www.foxblog.com');
+
+      await page.getByRole('button', { name: /create/i }).click();
+
+      await expect(page.getByText(/request failed/i)).toBeVisible();
+    });
+
     describe('When blog detail is opened', () => {
       beforeEach(async ({ page }) => {
         // Get all the view button (data-testid='detail-btn')
