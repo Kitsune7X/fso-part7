@@ -13,9 +13,12 @@ import {
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { useBlogQuery, useCreateBlog } from './hooks/useBlogsQueries';
+
 // Variable to make sure useEffect only run once to check for existing user
 let didInit = false;
 
+// TODO: Extract useQuery and useMutation to separate hooks
 const App = () => {
   // Access the client provided by the `QueryClientProvider`
   const queryClient = useQueryClient();
@@ -43,35 +46,38 @@ const App = () => {
 
   const blogFormRef = useRef(null);
 
-  // Query for blogs
-  const blogQuery = useQuery({
-    queryKey: ['blogs'],
-    queryFn: blogService.getAll,
-  });
+  // Query for blogs with useBlogQuery custom hook
+  const {
+    data: blogs,
+    isPending: blogQueryPending,
+    isError: blogQueryIsError,
+    error: blogQueryError,
+  } = useBlogQuery();
 
   // Set up blog query mutation
-  const blogMutation = useMutation({
-    mutationFn: blogService.create,
-    onSuccess: async (addedBlog) => {
-      await queryClient.invalidateQueries({ queryKey: ['blogs'] });
+  // const blogMutation = useMutation({
+  //   mutationFn: blogService.create,
+  //   onSuccess: (addedBlog) => {
+  //     // Update query cache directly with setQueryData
+  //     queryClient.setQueryData(['blogs'], [...blogs, addedBlog]);
 
-      displayNotification(
-        `A new blog ${addedBlog?.title} by ${addedBlog?.author} is added`,
-      );
-    },
-    onError: (error) => {
-      displayNotification(error.message, true);
-    },
-  });
+  //     displayNotification(
+  //       `A new blog ${addedBlog?.title} by ${addedBlog?.author} is added`,
+  //     );
+  //   },
+  //   onError: (error) => {
+  //     displayNotification(error.message, true);
+  //   },
+  // });
 
-  const blogs = blogQuery.data;
+  const blogMutation = useCreateBlog();
 
-  if (blogQuery.isPending) {
+  if (blogQueryPending) {
     return <h1>Loading...</h1>;
   }
 
-  if (blogQuery.isError) {
-    return <span>Error: {blogQuery.error.message}</span>;
+  if (blogQueryIsError) {
+    return <span>Error: {blogQueryError?.message}</span>;
   }
 
   // ---------- Display Notification ----------
@@ -122,19 +128,19 @@ const App = () => {
 
   // ---------- Handle Add Blog ----------
   // Use Tanstack query to handle adding blog
-  const handleAddBlog = async (newBlog) => {
-    blogMutation.mutate(newBlog);
-
-    // To get the returned data from useMutation
-    // https://stackoverflow.com/questions/75222161/how-to-return-data-from-tanstack-react-query-usemutation
-
-    // {
-    //   blogMutation.isError
-    //     ? displayNotification(`${blogMutation.error.message}`, true)
-    //     : displayNotification(
-    //         `A new blog ${blogMutation?.data?.title} by ${blogMutation?.data?.author} is added`,
-    //       );
-    // }
+  const handleAddBlog = (newBlog) => {
+    //https://tkdodo.eu/blog/mastering-mutations-in-react-query
+    // Get the newly added Blog through call back function on `mutate`
+    blogMutation.mutate(newBlog, {
+      onSuccess: (addedBlog) => {
+        displayNotification(
+          `A new blog ${addedBlog?.title} by ${addedBlog?.author} is added`,
+        );
+      },
+      onError: (error) => {
+        displayNotification(`${error?.message}`, true);
+      },
+    });
 
     blogFormRef.current.toggleChildrenVisibility();
   };
