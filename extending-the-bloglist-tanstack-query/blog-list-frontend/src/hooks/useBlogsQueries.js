@@ -39,3 +39,16 @@ export const useLikeBlog = () => {
 };
 
 // TODO: Write useDeleteBlog Hook
+export const useDeleteBlog = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id }) => blogService.remove(id),
+    onSuccess: (deletedBlog) => {
+      queryClient.setQueryData(['blogs'], (oldData) =>
+        oldData.filter((b) => b.id !== deletedBlog.id),
+      );
+    },
+    onError: (error) => console.log(error),
+  });
+};

@@ -13,7 +13,11 @@ import {
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { useBlogQuery, useCreateBlog } from './hooks/useBlogsQueries';
+import {
+  useBlogQuery,
+  useCreateBlog,
+  useDeleteBlog,
+} from './hooks/useBlogsQueries';
 
 // Variable to make sure useEffect only run once to check for existing user
 let didInit = false;
@@ -55,6 +59,8 @@ const App = () => {
   } = useBlogQuery();
 
   const blogMutation = useCreateBlog();
+
+  const blogDelete = useDeleteBlog();
 
   if (blogQueryPending) {
     return <h1>Loading...</h1>;
@@ -129,21 +135,19 @@ const App = () => {
     blogFormRef.current.toggleChildrenVisibility();
   };
 
-  // TODO: use Tanstack query to handle delete and like blog
   // ---------- Delete Blog ----------
-  const handleDeleteBlog = async (blogToDelete) => {
-    try {
-      const deletedBlog = await blogService.remove(blogToDelete.id);
-
-      // console.log(removedBlog);
-      displayNotification(`${deletedBlog.title} has been deleted`);
-
-      setBlogs(blogs.filter((blog) => blog.id !== deletedBlog.id));
-    } catch (error) {
-      console.log(error.response.data.error);
-
-      displayNotification(`${error.response.data.error}`, true);
-    }
+  const handleDeleteBlog = (blogToDelete) => {
+    blogDelete.mutate(
+      { id: blogToDelete.id },
+      {
+        onSuccess: (deletedBlog) => {
+          displayNotification(`"${deletedBlog.title}" has been deleted`);
+        },
+        onError: (error) => {
+          displayNotification(error.message, true);
+        },
+      },
+    );
   };
 
   // ---------- Login Form ----------
