@@ -163,9 +163,7 @@ describe('Blog app', () => {
         ).toBeHidden();
 
         await expect(
-          page
-            .locator('div')
-            .filter({ hasText: /^A blog by USAGI has been deleted$/ })
+          page.getByText('"A blog by USAGI" has been')
         ).toBeVisible();
       });
 

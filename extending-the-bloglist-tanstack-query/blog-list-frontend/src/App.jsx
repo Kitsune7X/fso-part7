@@ -11,7 +11,7 @@ import {
   useNotificationDispatchContext,
 } from './notificationContext';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useUserContext, useUserContextDispatch } from './UserContext';
 
 import {
   useBlogQuery,
@@ -20,19 +20,21 @@ import {
 } from './hooks/useBlogsQueries';
 
 // Variable to make sure useEffect only run once to check for existing user
+// https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
 let didInit = false;
 
-// TODO: Manage user state with context
 const App = () => {
-  // Access the client provided by the `QueryClientProvider`
-  const queryClient = useQueryClient();
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
+  // Use Custom hook for notification
   const notification = useNotificationContext();
   const dispatchNotification = useNotificationDispatchContext();
+
+  // Use Custom hook for managing user
+  const user = useUserContext();
+  const dispatchUser = useUserContextDispatch();
 
   // If the user is logged in, set user so that user stay logged in
   useEffect(() => {
@@ -42,11 +44,14 @@ const App = () => {
       // console.log(user);
 
       if (user) {
-        setUser(user);
+        dispatchUser({
+          type: 'SET_USER',
+          payload: user,
+        });
         blogService.setToken(user.token);
       }
     }
-  }, []);
+  }, [dispatchUser]);
 
   const blogFormRef = useRef(null);
 
@@ -99,7 +104,10 @@ const App = () => {
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(user));
 
-      setUser(user);
+      dispatchUser({
+        type: 'SET_USER',
+        payload: user,
+      });
       displayNotification('You have successfully logged in');
       blogService.setToken(user.token);
       setUsername('');
@@ -115,7 +123,9 @@ const App = () => {
 
     displayNotification('You have successfully logged out');
 
-    setUser(null);
+    dispatchUser({
+      type: 'CLEAR_USER',
+    });
   };
 
   // ---------- Handle Add Blog ----------

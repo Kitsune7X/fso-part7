@@ -7,11 +7,7 @@ export const UserContextDispatch = createContext(null);
 
 export const useUserContext = () => {
   const context = useContext(UserContext);
-  if (!context) {
-    throw new Error(
-      'useUserContext need to be used inside UserContextProvider',
-    );
-  }
+
   return context;
 };
 

@@ -69,22 +69,6 @@ blogRouter.post('/', userExtractor, requireUser, async (req, res) => {
   res.status(201).json(savedBlog);
 });
 
-// Create new blogs for test
-// blogRouter.post('/', async (req, res) => {
-//   const body = req.body;
-
-//   const blog = new Blog({
-//     title: body.title,
-//     author: body.author,
-//     url: body.url,
-//     likes: body.likes || 0,
-//   });
-
-//   const savedBlog = await blog.save();
-
-//   res.status(201).json(savedBlog);
-// });
-
 // ---------- View single blog ----------
 blogRouter.get('/:id', async (req, res) => {
   const id = req.params.id;

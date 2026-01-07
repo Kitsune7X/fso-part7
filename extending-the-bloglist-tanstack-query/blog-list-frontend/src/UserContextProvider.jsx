@@ -1,8 +1,6 @@
 import { useReducer } from 'react';
 import { UserContext, UserContextDispatch } from './UserContext';
 
-// Import UserContext, UserContextDispatch and provide those for the children
-
 export const UserContextProvider = ({ children }) => {
   const userReducer = (_state, action) => {
     switch (action.type) {
