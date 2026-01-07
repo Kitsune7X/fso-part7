@@ -54,22 +54,6 @@ const App = () => {
     error: blogQueryError,
   } = useBlogQuery();
 
-  // Set up blog query mutation
-  // const blogMutation = useMutation({
-  //   mutationFn: blogService.create,
-  //   onSuccess: (addedBlog) => {
-  //     // Update query cache directly with setQueryData
-  //     queryClient.setQueryData(['blogs'], [...blogs, addedBlog]);
-
-  //     displayNotification(
-  //       `A new blog ${addedBlog?.title} by ${addedBlog?.author} is added`,
-  //     );
-  //   },
-  //   onError: (error) => {
-  //     displayNotification(error.message, true);
-  //   },
-  // });
-
   const blogMutation = useCreateBlog();
 
   if (blogQueryPending) {
@@ -145,6 +129,7 @@ const App = () => {
     blogFormRef.current.toggleChildrenVisibility();
   };
 
+  // TODO: use Tanstack query to handle delete and like blog
   // ---------- Delete Blog ----------
   const handleDeleteBlog = async (blogToDelete) => {
     try {

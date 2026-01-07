@@ -1,35 +1,31 @@
 import { useState } from 'react';
 // https://vite.dev/guide/features#css-modules
 import styles from './Blog.module.css';
-import blogService from '../../services/blogs';
+import { useLikeBlog } from '../../hooks/useBlogsQueries';
 
 const Blog = ({ blog, displayNotification, handleDeleteBlog }) => {
   const [moreDetail, setMoreDetail] = useState(false);
-  const [likes, setLikes] = useState(blog.likes);
+
+  const blogLikeMutation = useLikeBlog();
 
   // ---------- Add Likes ----------
-  const addLikes = async () => {
-    // console.log(`${blog.id}`);
-    const newLikes = likes + 1;
-
+  const addLikes = () => {
     const stuffToUpdate = {
       user: blog.user.id,
-      likes: newLikes,
+      likes: blog.likes + 1,
       author: blog.author,
       title: blog.title,
       url: blog.url,
     };
 
-    // console.log(stuffToUpdate);
-    try {
-      const result = await blogService.update(stuffToUpdate, blog.id);
-      // console.log(result);
-      setLikes(result.likes);
-    } catch (error) {
-      console.log(error.response.data.error);
-
-      displayNotification(`${error.response.data.error}`, true);
-    }
+    blogLikeMutation.mutate(
+      { blog: stuffToUpdate, id: blog.id },
+      {
+        onError: (error) => {
+          displayNotification(error.message, true);
+        },
+      },
+    );
   };
 
   return (
@@ -51,7 +47,7 @@ const Blog = ({ blog, displayNotification, handleDeleteBlog }) => {
         <div>
           <a href="#">{blog.url}</a>
           <div>
-            <span data-testid="likes-count">Likes: {likes}</span>
+            <span data-testid="likes-count">Likes: {blog.likes}</span>
             <button onClick={addLikes} type="button">
               Like
             </button>
