@@ -22,7 +22,7 @@ import {
 // Variable to make sure useEffect only run once to check for existing user
 let didInit = false;
 
-// TODO: Extract useQuery and useMutation to separate hooks
+// TODO: Manage user state with context
 const App = () => {
   // Access the client provided by the `QueryClientProvider`
   const queryClient = useQueryClient();
@@ -71,7 +71,6 @@ const App = () => {
   }
 
   // ---------- Display Notification ----------
-
   const displayNotification = (message, isError = false) => {
     dispatchNotification({
       type: 'DISPLAY_NOTIFICATION',
@@ -85,6 +84,7 @@ const App = () => {
     }, 5000);
   };
 
+  // TODO: Rewrite login using Tanstack query
   // ---------- Handle Login ----------
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -94,6 +94,8 @@ const App = () => {
         username: username.trim(),
         password: password.trim(),
       });
+
+      console.log(user);
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(user));
 
