@@ -19,6 +19,8 @@ import {
   useDeleteBlog,
 } from './hooks/useBlogsQueries';
 
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+
 // Variable to make sure useEffect only run once to check for existing user
 // https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
 let didInit = false;
