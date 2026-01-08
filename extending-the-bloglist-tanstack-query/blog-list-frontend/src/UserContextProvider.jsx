@@ -21,5 +21,3 @@ export const UserContextProvider = ({ children }) => {
     </UserContext>
   );
 };
-
-// TODO: Provide Context for all the child components

@@ -38,7 +38,6 @@ export const useLikeBlog = () => {
   });
 };
 
-// TODO: Write useDeleteBlog Hook
 export const useDeleteBlog = () => {
   const queryClient = useQueryClient();
 

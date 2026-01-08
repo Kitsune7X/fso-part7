@@ -1,5 +1,3 @@
-// TODO: Create context and provide it for all the component
-// TODO: Setup the reducer with user and dispatch User
 import { createContext, useContext } from 'react';
 
 export const UserContext = createContext(null);
