@@ -19,8 +19,6 @@ import {
   useDeleteBlog,
 } from './hooks/useBlogsQueries';
 
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-
 // Variable to make sure useEffect only run once to check for existing user
 // https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
 let didInit = false;
@@ -216,18 +214,23 @@ const App = () => {
 
   return (
     <div>
-      <h1>Blog App</h1>
+      {/* <h1>Blog App</h1> */}
       {notification.message && <Notification />}
       {!user && loginForm()}
       {user && (
         <div>
           <p>{user.name} is logged in.</p>
           <button onClick={handleLogout}>logout</button>
+        </div>
+      )}
+
+      {user && (
+        <>
           <VisibilityToggle buttonLabel="Create new Blog" ref={blogFormRef}>
             <BlogEditor createBlog={handleAddBlog} />
           </VisibilityToggle>
           {blogDisplay()}
-        </div>
+        </>
       )}
     </div>
   );

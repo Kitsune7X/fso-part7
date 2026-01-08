@@ -18,14 +18,13 @@ const router = createRouter({ routeTree });
 ReactDOM.createRoot(document.getElementById('root')).render(
   // Provide the Client for the app
   <StrictMode>
-    <RouterProvider router={router}>
-      <QueryClientProvider client={queryClient}>
-        <NotificationContextProvider>
-          <UserContextProvider>
-            <App />
-          </UserContextProvider>
-        </NotificationContextProvider>
-      </QueryClientProvider>
-    </RouterProvider>
+    <QueryClientProvider client={queryClient}>
+      <NotificationContextProvider>
+        <UserContextProvider>
+          {/* <App /> */}
+          <RouterProvider router={router} />
+        </UserContextProvider>
+      </NotificationContextProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
