@@ -7,9 +7,14 @@ export const useFormInput = (type, initialValue = '') => {
     setValue(e.target.value);
   };
 
+  const resetValue = () => {
+    setValue('');
+  };
+
   return {
     type,
     value,
     onChange,
+    resetValue,
   };
 };

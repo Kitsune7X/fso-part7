@@ -8,14 +8,20 @@ import blogService from '../services/blogs';
 import loginService from '../services/login';
 
 import { useDisplayNotification } from '../../hooks/useDisplayNotification';
+import { useFormInput } from '../hooks/useFormInput';
 
 // Variable to make sure useEffect only run once to check for existing user
 // https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
 let didInit = false;
 
 const RootLayout = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  // Use custom hook for input and pull a property off the object with
+  // destructure and spread
+  const usernameInput = useFormInput('text');
+  const { resetValue: resetUsername, ...usernameProps } = usernameInput;
+
+  const passwordInput = useFormInput('password');
+  const { resetValue: resetPassword, ...passwordProps } = passwordInput;
 
   // Use Custom hook for notification
   const notification = useNotificationContext();
@@ -49,8 +55,8 @@ const RootLayout = () => {
 
     try {
       const user = await loginService.login({
-        username: username.trim(),
-        password: password.trim(),
+        username: usernameProps.value.trim(),
+        password: passwordProps.value.trim(),
       });
 
       // console.log(user);
@@ -63,8 +69,8 @@ const RootLayout = () => {
       });
       displayNotification('You have successfully logged in');
       blogService.setToken(user.token);
-      setUsername('');
-      setPassword('');
+      resetUsername();
+      resetPassword();
     } catch {
       displayNotification('Wrong username or password', true);
     }
@@ -90,22 +96,14 @@ const RootLayout = () => {
       <div>
         <label>
           username
-          <input
-            type="text"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
+          <input {...usernameProps} />
         </label>
       </div>
 
       <div>
         <label>
           password
-          <input
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
+          <input {...passwordProps} />
         </label>
       </div>
 
@@ -141,5 +139,4 @@ const RootLayout = () => {
 
 export const Route = createRootRoute({ component: RootLayout });
 
-// TODO: Extract `loginForm`, `handleLogout` to custom Hook to be used in the root route
 // TODO: Display blog list at root route (Index)
