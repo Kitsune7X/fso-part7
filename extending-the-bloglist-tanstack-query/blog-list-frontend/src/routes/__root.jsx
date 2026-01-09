@@ -116,12 +116,15 @@ const RootLayout = () => {
       <div>
         <h1>Blog App</h1>
 
-        <Link to="/">Home</Link>
-        <Link to="/app">App</Link>
-        <Link to="/about">About</Link>
-        <Link to="/users">Users</Link>
+        {user && (
+          <div>
+            <Link to="/">Home</Link>
+            <Link to="/users">Users</Link>
+            <hr />
+          </div>
+        )}
       </div>
-      <hr />
+
       {notification.message && <Notification />}
       {!user && loginForm()}
 
@@ -131,7 +134,7 @@ const RootLayout = () => {
           <button onClick={handleLogout}>logout</button>
         </div>
       )}
-      <Outlet />
+      {user && <Outlet />}
       <TanStackRouterDevtools />
     </>
   );

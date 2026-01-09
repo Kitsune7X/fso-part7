@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UsersRouteImport } from './routes/users'
 import { Route as TestRouteImport } from './routes/test'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteRouteImport } from './routes/app.route'
@@ -18,6 +19,11 @@ import { Route as IndexUsersRouteImport } from './routes/index.users'
 import { Route as AppUsersRouteImport } from './routes/app.users'
 import { Route as AppFuckRouteImport } from './routes/app.fuck'
 
+const UsersRoute = UsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TestRoute = TestRouteImport.update({
   id: '/test',
   path: '/test',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
+  '/users': typeof UsersRoute
   '/app/fuck': typeof AppFuckRoute
   '/app/users': typeof AppUsersRoute
   '/index/users': typeof IndexUsersRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
+  '/users': typeof UsersRoute
   '/app/fuck': typeof AppFuckRoute
   '/app/users': typeof AppUsersRoute
   '/index/users': typeof IndexUsersRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
+  '/users': typeof UsersRoute
   '/app/fuck': typeof AppFuckRoute
   '/app/users': typeof AppUsersRoute
   '/index/users': typeof IndexUsersRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/about'
     | '/test'
+    | '/users'
     | '/app/fuck'
     | '/app/users'
     | '/index/users'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/test'
+    | '/users'
     | '/app/fuck'
     | '/app/users'
     | '/index/users'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/about'
     | '/test'
+    | '/users'
     | '/app/fuck'
     | '/app/users'
     | '/index/users'
@@ -126,11 +138,19 @@ export interface RootRouteChildren {
   AppRouteRoute: typeof AppRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   TestRoute: typeof TestRoute
+  UsersRoute: typeof UsersRoute
   IndexUsersRoute: typeof IndexUsersRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/test': {
       id: '/test'
       path: '/test'
@@ -211,6 +231,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRouteRoute: AppRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   TestRoute: TestRoute,
+  UsersRoute: UsersRoute,
   IndexUsersRoute: IndexUsersRoute,
 }
 export const routeTree = rootRouteImport

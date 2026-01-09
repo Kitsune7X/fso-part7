@@ -17,6 +17,22 @@ describe('Blog app', () => {
       },
     });
 
+    await request.post('/api/users', {
+      data: {
+        username: 'shiba',
+        name: 'SHIBA-CHAN',
+        password: 'foxvillage',
+      },
+    });
+
+    await request.post('/api/users', {
+      data: {
+        username: 'kuma',
+        name: 'KUMA-KUN',
+        password: 'foxvillage',
+      },
+    });
+
     const body = await newUser.json();
 
     // console.log(body);
