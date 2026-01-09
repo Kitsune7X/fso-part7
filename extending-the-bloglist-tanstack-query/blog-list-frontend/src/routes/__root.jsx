@@ -19,6 +19,7 @@ const RootLayout = () => {
         <Link to="/users">Users</Link>
       </div>
       <hr />
+
       <Outlet />
       <TanStackRouterDevtools />
     </>

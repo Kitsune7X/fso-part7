@@ -5,6 +5,7 @@ import loginService from './services/login';
 import Notification from './components/Notification/Notification';
 import BlogEditor from './components/BlogEditor/BlogEditor';
 import VisibilityToggle from './components/VisibilityToggle/VisibilityToggle';
+import { useFormInput } from './hooks/useFormInput';
 
 import {
   useNotificationContext,
@@ -26,7 +27,6 @@ let didInit = false;
 const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  // const [user, setUser] = useState(null);
 
   // Use Custom hook for notification
   const notification = useNotificationContext();
@@ -100,7 +100,7 @@ const App = () => {
         password: password.trim(),
       });
 
-      console.log(user);
+      // console.log(user);
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(user));
 
@@ -163,6 +163,7 @@ const App = () => {
   };
 
   // ---------- Login Form ----------
+  // TODO: Rewrite input with custom hook
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <h2>Log in to application</h2>
