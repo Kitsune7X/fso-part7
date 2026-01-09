@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useFormInput = (type, initialValue) => {
+export const useFormInput = (type, initialValue = '') => {
   const [value, setValue] = useState(initialValue);
 
   const onChange = (e) => {
@@ -8,6 +8,7 @@ export const useFormInput = (type, initialValue) => {
   };
 
   return {
+    type,
     value,
     onChange,
   };
