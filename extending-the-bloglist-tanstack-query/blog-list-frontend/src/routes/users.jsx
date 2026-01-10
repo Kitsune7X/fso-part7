@@ -7,7 +7,12 @@ export const Route = createFileRoute('/users')({
 });
 
 function RouteComponent() {
-  const { data: users, isPending } = useQuery({
+  const {
+    data: users,
+    isPending,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const response = await axios.get('/api/users');
@@ -17,6 +22,10 @@ function RouteComponent() {
 
   if (isPending) {
     return <h2>Loading...</h2>;
+  }
+
+  if (isError) {
+    return <span>{error.message}</span>;
   }
 
   console.log(users);
