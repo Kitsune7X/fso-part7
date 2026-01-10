@@ -1,6 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Users from '../components/Users/Users';
 
 export const Route = createFileRoute('/users')({
   component: RouteComponent,
@@ -28,16 +29,13 @@ function RouteComponent() {
     return <span>{error.message}</span>;
   }
 
-  console.log(users);
+  // console.log(users);
 
   return (
     <>
       <h2>Users</h2>
-      {users.map((user) => (
-        <li key={user.id}>
-          {user.name} {user.blogs.length}
-        </li>
-      ))}
+      <Users users={users} />
+      <Outlet />
     </>
   );
 }

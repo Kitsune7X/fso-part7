@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { getByText, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Users from './Users';
 
 describe('Users component test', () => {
@@ -53,9 +53,13 @@ describe('Users component test', () => {
     expect(rows).toHaveLength(4);
   });
 
-  it('Display correct name and blog count', () => {
+  it('Display correct name and blog count', async () => {
     expect(screen.getByText('FOX')).toBeInTheDocument();
     expect(screen.getByText('SHIBA-CHAN')).toBeInTheDocument();
     expect(screen.getByText('KUMA-KUN')).toBeInTheDocument();
+
+    const cells = await screen.findAllByTestId('test-blog-cell');
+
+    expect(cells[0].textContent).toBe('2');
   });
 });
