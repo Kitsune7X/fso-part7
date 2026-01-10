@@ -3,7 +3,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { useNotificationContext } from '../notificationContext';
 import { useUserContext, useUserContextDispatch } from '../UserContext';
 import Notification from '../components/Notification/Notification';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import blogService from '../services/blogs';
 import loginService from '../services/login';
 
@@ -88,7 +88,6 @@ const RootLayout = () => {
   };
 
   // ---------- Login Form ----------
-  // TODO: Rewrite input with custom hook
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <h2>Log in to application</h2>
