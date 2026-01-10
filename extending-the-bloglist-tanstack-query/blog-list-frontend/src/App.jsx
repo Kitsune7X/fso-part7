@@ -5,7 +5,7 @@ import VisibilityToggle from './components/VisibilityToggle/VisibilityToggle';
 
 import { useUserContext } from './UserContext';
 
-import { useDisplayNotification } from '../hooks/useDisplayNotification';
+import { useDisplayNotification } from './hooks/useDisplayNotification';
 
 import {
   useBlogQuery,

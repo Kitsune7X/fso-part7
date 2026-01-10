@@ -1,4 +1,4 @@
-import { useNotificationDispatchContext } from '../src/notificationContext';
+import { useNotificationDispatchContext } from '../notificationContext';
 
 export const useDisplayNotification = () => {
   const dispatchNotification = useNotificationDispatchContext();

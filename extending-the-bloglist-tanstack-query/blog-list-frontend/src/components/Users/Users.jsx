@@ -1,3 +1,5 @@
+import { Link } from '@tanstack/react-router';
+
 const Users = ({ users }) => {
   return (
     <table>
@@ -12,7 +14,9 @@ const Users = ({ users }) => {
       <tbody>
         {users.map((user) => (
           <tr key={user.id}>
-            <th>{user.name}</th>
+            <Link to={user.id}>
+              <th>{user.name}</th>
+            </Link>
             <td data-testid="test-blog-cell">{user.blogs.length}</td>
           </tr>
         ))}

@@ -12,8 +12,14 @@ const queryClient = new QueryClient();
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
 
-// Create a new router instance
-const router = createRouter({ routeTree });
+// Create a new router instance with queryClient context
+// to provide queryClient for child routes
+const router = createRouter({
+  routeTree,
+  context: {
+    queryClient,
+  },
+});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // Provide the Client for the app

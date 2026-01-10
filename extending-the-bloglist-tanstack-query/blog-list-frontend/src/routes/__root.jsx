@@ -6,8 +6,9 @@ import Notification from '../components/Notification/Notification';
 import { useEffect } from 'react';
 import blogService from '../services/blogs';
 import loginService from '../services/login';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { useDisplayNotification } from '../../hooks/useDisplayNotification';
+import { useDisplayNotification } from '../hooks/useDisplayNotification';
 import { useFormInput } from '../hooks/useFormInput';
 
 // Variable to make sure useEffect only run once to check for existing user
@@ -134,11 +135,10 @@ const RootLayout = () => {
         </div>
       )}
       {user && <Outlet />}
+      <ReactQueryDevtools buttonPosition="top-right" />
       <TanStackRouterDevtools />
     </>
   );
 };
 
 export const Route = createRootRoute({ component: RootLayout });
-
-// TODO: Display blog list at root route (Index)
