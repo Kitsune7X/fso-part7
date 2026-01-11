@@ -19,7 +19,6 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
 import { Route as IndexUsersRouteImport } from './routes/index.users'
 import { Route as AppUsersRouteImport } from './routes/app.users'
-import { Route as AppFuckRouteImport } from './routes/app.fuck'
 
 const TestRoute = TestRouteImport.update({
   id: '/test',
@@ -71,11 +70,6 @@ const AppUsersRoute = AppUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppFuckRoute = AppFuckRouteImport.update({
-  id: '/fuck',
-  path: '/fuck',
-  getParentRoute: () => AppRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -83,7 +77,6 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
-  '/app/fuck': typeof AppFuckRoute
   '/app/users': typeof AppUsersRoute
   '/index/users': typeof IndexUsersRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -94,7 +87,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
-  '/app/fuck': typeof AppFuckRoute
   '/app/users': typeof AppUsersRoute
   '/index/users': typeof IndexUsersRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -108,7 +100,6 @@ export interface FileRoutesById {
   '/users': typeof UsersRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
-  '/app/fuck': typeof AppFuckRoute
   '/app/users': typeof AppUsersRoute
   '/index/users': typeof IndexUsersRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -123,7 +114,6 @@ export interface FileRouteTypes {
     | '/users'
     | '/about'
     | '/test'
-    | '/app/fuck'
     | '/app/users'
     | '/index/users'
     | '/users/$userId'
@@ -134,7 +124,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/test'
-    | '/app/fuck'
     | '/app/users'
     | '/index/users'
     | '/users/$userId'
@@ -147,7 +136,6 @@ export interface FileRouteTypes {
     | '/users'
     | '/about'
     | '/test'
-    | '/app/fuck'
     | '/app/users'
     | '/index/users'
     | '/users/$userId'
@@ -236,24 +224,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUsersRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/app/fuck': {
-      id: '/app/fuck'
-      path: '/fuck'
-      fullPath: '/app/fuck'
-      preLoaderRoute: typeof AppFuckRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
   }
 }
 
 interface AppRouteRouteChildren {
-  AppFuckRoute: typeof AppFuckRoute
   AppUsersRoute: typeof AppUsersRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppFuckRoute: AppFuckRoute,
   AppUsersRoute: AppUsersRoute,
   AppIndexRoute: AppIndexRoute,
 }

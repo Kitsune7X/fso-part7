@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Users from '../components/Users/Users';
+import userServices from '../services/users';
 
 export const Route = createFileRoute('/users/')({
   component: UsersList,
@@ -15,10 +15,7 @@ const UsersList = () => {
     error,
   } = useQuery({
     queryKey: ['users'],
-    queryFn: async () => {
-      const response = await axios.get('/api/users');
-      return response.data;
-    },
+    queryFn: userServices.getAll,
   });
 
   if (isPending) {

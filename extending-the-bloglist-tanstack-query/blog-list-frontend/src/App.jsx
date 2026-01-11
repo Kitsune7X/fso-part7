@@ -95,8 +95,6 @@ const App = () => {
 
   return (
     <div>
-      {/* <h1>Blog App</h1> */}
-
       {user && (
         <>
           <VisibilityToggle buttonLabel="Create new Blog" ref={blogFormRef}>
