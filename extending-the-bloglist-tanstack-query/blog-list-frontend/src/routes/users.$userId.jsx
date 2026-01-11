@@ -1,20 +1,11 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import axios from 'axios';
+import { userQueryOptions } from '../userQueryOptions';
+import { useUserQuery } from '../hooks/useUsersQueries';
 
 export const Route = createFileRoute('/users/$userId')({
   // Use the `loader` option to ensure that the data is loaded
   loader: ({ context: { queryClient }, params: { userId } }) => {
-    return queryClient.ensureQueryData(
-      queryOptions({
-        queryKey: ['users', { userId }],
-        queryFn: async () => {
-          const response = await axios.get(`/api/users/${userId}`);
-
-          return response.data;
-        },
-      }),
-    );
+    return queryClient.ensureQueryData(userQueryOptions(userId));
   },
   component: User,
 });
@@ -22,16 +13,7 @@ export const Route = createFileRoute('/users/$userId')({
 const User = () => {
   const userId = Route.useParams().userId;
   // Read the data from cache and subscribe to update
-  const { data: user } = useSuspenseQuery(
-    queryOptions({
-      queryKey: ['users', { userId }],
-      queryFn: async () => {
-        const response = await axios.get(`/api/users/${userId}`);
-
-        return response.data;
-      },
-    }),
-  );
+  const { data: user } = useUserQuery(userId);
 
   return (
     <>
@@ -45,5 +27,3 @@ const User = () => {
     </>
   );
 };
-
-// TODO: Extract queryOptions and write user service for fetching user data

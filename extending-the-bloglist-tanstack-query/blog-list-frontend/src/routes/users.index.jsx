@@ -1,22 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useQuery } from '@tanstack/react-query';
 import Users from '../components/Users/Users';
-import userServices from '../services/users';
+import { useUsersQuery } from '../hooks/useUsersQueries';
 
 export const Route = createFileRoute('/users/')({
   component: UsersList,
 });
 
 const UsersList = () => {
-  const {
-    data: users,
-    isPending,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['users'],
-    queryFn: userServices.getAll,
-  });
+  const { data: users, isPending, isError, error } = useUsersQuery();
 
   if (isPending) {
     return <h2>Loading...</h2>;

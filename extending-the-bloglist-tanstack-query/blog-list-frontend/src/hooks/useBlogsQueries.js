@@ -1,12 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import blogService from '../services/blogs';
+import { blogsQueryOptions } from '../blogsQueryOptions';
 
 export const useBlogQuery = () => {
-  return useQuery({
-    queryKey: ['blogs'],
-    queryFn: blogService.getAll,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(blogsQueryOptions);
 };
 
 export const useCreateBlog = () => {

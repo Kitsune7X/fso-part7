@@ -14,9 +14,17 @@ const Users = ({ users }) => {
       <tbody>
         {users.map((user) => (
           <tr key={user.id}>
-            <Link to={user.id}>
-              <th>{user.name}</th>
-            </Link>
+            <th>
+              <Link
+                to="/users/$userId"
+                params={{
+                  userId: user.id,
+                }}
+              >
+                {user.name}
+              </Link>
+            </th>
+
             <td data-testid="test-blog-cell">{user.blogs.length}</td>
           </tr>
         ))}
