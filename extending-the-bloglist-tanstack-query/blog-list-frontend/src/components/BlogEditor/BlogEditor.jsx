@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Input from './Input/Input';
 import Button from '@mui/material/Button';
 
+import { Box, Typography } from '@mui/material';
+
 // https://medium.com/@ozhanli/passing-data-from-child-to-parent-components-in-react-e347ea60b1bb
 const BlogEditor = ({ createBlog }) => {
   const [title, setTitle] = useState('');
@@ -25,8 +27,8 @@ const BlogEditor = ({ createBlog }) => {
 
   return (
     <div>
-      <h2>Create new</h2>
-      <form onSubmit={handleSubmit}>
+      <Typography variant="h3">Create new</Typography>
+      <Box component="form" onSubmit={handleSubmit}>
         <Input stuff={title} setStuff={setTitle}>
           Title
         </Input>
@@ -42,7 +44,7 @@ const BlogEditor = ({ createBlog }) => {
         <Button variant="contained" type="submit">
           Create
         </Button>
-      </form>
+      </Box>
     </div>
   );
 };

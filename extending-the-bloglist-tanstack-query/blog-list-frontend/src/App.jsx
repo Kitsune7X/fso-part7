@@ -13,6 +13,9 @@ import {
   useDeleteBlog,
 } from './hooks/useBlogsQueries';
 
+// ---------- Theming ----------
+import { Box, Typography } from '@mui/material';
+
 const App = () => {
   const user = useUserContext();
 
@@ -61,16 +64,21 @@ const App = () => {
 
   // ---------- Blogs ----------
   const blogDisplay = () => (
-    <div>
-      <h2>Blogs</h2>
-      <div id="blog-container">
+    <Box sx={{ marginTop: '2rem', marginBottom: '2rem' }}>
+      <Typography variant="h2" marginBottom={2}>
+        Blogs
+      </Typography>
+      <Box
+        id="blog-container"
+        sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
+      >
         {blogs
           ?.sort((a, b) => b.likes - a.likes)
           .map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 
   return (

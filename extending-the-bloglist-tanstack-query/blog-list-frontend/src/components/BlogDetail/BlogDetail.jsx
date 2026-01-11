@@ -7,6 +7,8 @@ import {
 import { useDisplayNotification } from '../../hooks/useDisplayNotification';
 import { useFormInput } from '../../hooks/useFormInput';
 
+import { Card, CardContent, Typography, Button, Box } from '@mui/material';
+
 const BlogDetail = ({ blog }) => {
   const blogLikeMutation = useLikeBlog();
   const blogDeleteMutation = useDeleteBlog();
@@ -81,45 +83,55 @@ const BlogDetail = ({ blog }) => {
   };
 
   return (
-    <>
-      <h2>{blog.title}</h2>
-      <a href="#">{blog.url}</a>
-      <div>
-        <span>{blog.likes}</span>
-        <button onClick={addLike} type="button">
-          Likes
-        </button>
-        {blog?.user && (
-          <button
-            onClick={() => {
-              window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`)
-                ? handleDeleteBlog()
-                : displayNotification('No changes have been made');
-            }}
-            type="button"
-          >
-            Delete Blog
-          </button>
-        )}
-      </div>
-      <p>Added by {blog.author}</p>
-      <h3>Comments</h3>
-      <form onSubmit={handleAddComment}>
-        <input {...commentProps} />
-        <button type="submit">Add comment</button>
-      </form>
+    <Card sx={{ p: 4 }}>
+      <CardContent>
+        <Typography variant="h5">{blog.title}</Typography>
+        <a href="#">{blog.url}</a>
+        <div>
+          <span>{blog.likes} Likes</span>
+          <Button onClick={addLike} type="button">
+            Likes
+          </Button>
+          {blog?.user && (
+            <Button
+              onClick={() => {
+                window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`)
+                  ? handleDeleteBlog()
+                  : displayNotification('No changes have been made');
+              }}
+              type="button"
+            >
+              Delete Blog
+            </Button>
+          )}
+        </div>
+        <p>Added by {blog.author}</p>
+        <h3>Comments</h3>
+        <Box
+          component="form"
+          onSubmit={handleAddComment}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
+        >
+          <input {...commentProps} style={{ width: '100%' }} />
+          <Button type="submit">Add comment</Button>
+        </Box>
 
-      <ul>
-        {blog.comments.map((c) => (
-          <li key={c._id}>
-            {c.comment}{' '}
-            <button type="button" onClick={() => handleDeleteComment(c._id)}>
-              Delete comment
-            </button>
-          </li>
-        ))}
-      </ul>
-    </>
+        <ul>
+          {blog.comments.map((c) => (
+            <li key={c._id}>
+              {c.comment}{' '}
+              <Button type="button" onClick={() => handleDeleteComment(c._id)}>
+                Delete comment
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
   );
 };
 

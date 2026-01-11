@@ -2,20 +2,26 @@
 import styles from './Blog.module.css';
 import { Link } from '@tanstack/react-router';
 
+import { Card, CardContent, Link as MuiLink, Typography } from '@mui/material';
+
 const Blog = ({ blog }) => {
   return (
-    <div className={styles.blog}>
-      <div>
+    <Card>
+      <CardContent>
         <Link
           to="/blogs/$blogId"
           params={{
             blogId: blog.id,
           }}
+          style={{ textDecoration: 'none' }}
         >
-          {blog.title} {blog.author}
+          <MuiLink underline="hover" color="text.primary">
+            <Typography variant="h6">"{blog.title}"</Typography> by{' '}
+            {blog.author}
+          </MuiLink>
         </Link>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

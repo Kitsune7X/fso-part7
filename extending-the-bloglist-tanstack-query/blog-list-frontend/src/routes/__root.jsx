@@ -127,13 +127,6 @@ const RootLayout = () => {
         label="Username"
       />
 
-      {/* <div>
-        <label>
-          Password
-          <input {...passwordProps} />
-        </label>
-      </div> */}
-
       <TextField
         slotProps={{
           htmlInput: {
