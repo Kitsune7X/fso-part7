@@ -8,7 +8,7 @@ import { useUserContext } from './UserContext';
 import { useDisplayNotification } from './hooks/useDisplayNotification';
 
 import {
-  useBlogQuery,
+  useBlogsQuery,
   useCreateBlog,
   useDeleteBlog,
 } from './hooks/useBlogsQueries';
@@ -20,13 +20,13 @@ const App = () => {
 
   const blogFormRef = useRef(null);
 
-  // Query for blogs with useBlogQuery custom hook
+  // Query for blogs with useBlogsQuery custom hook
   const {
     data: blogs,
     isPending: blogQueryPending,
     isError: blogQueryIsError,
     error: blogQueryError,
-  } = useBlogQuery();
+  } = useBlogsQuery();
 
   const blogMutation = useCreateBlog();
 

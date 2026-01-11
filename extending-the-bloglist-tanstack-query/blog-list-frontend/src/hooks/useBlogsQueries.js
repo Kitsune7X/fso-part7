@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import blogService from '../services/blogs';
 import { blogsQueryOptions } from '../blogsQueryOptions';
 
-export const useBlogQuery = () => {
+export const useBlogsQuery = () => {
   return useQuery(blogsQueryOptions);
 };
 
