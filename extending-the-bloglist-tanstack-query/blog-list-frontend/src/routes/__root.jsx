@@ -17,7 +17,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Link as MuiLink, Breadcrumbs, Button } from '@mui/material';
+import { Link as MuiLink, Breadcrumbs, Button, TextField } from '@mui/material';
 
 // Variable to make sure useEffect only run once to check for existing user
 // https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
@@ -98,25 +98,57 @@ const RootLayout = () => {
 
   // ---------- Login Form ----------
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
+    <Box
+      component="form"
+      onSubmit={handleLogin}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
+        alignItems: 'flex-start',
+      }}
+    >
       <Typography variant="h3">Log in to application</Typography>
 
-      <div>
+      {/* <div>
         <label>
           Username
           <input {...usernameProps} />
         </label>
-      </div>
+      </div> */}
+      <TextField
+        slotProps={{
+          htmlInput: {
+            type: 'text',
+            value: usernameProps.value,
+            onChange: usernameProps.onChange,
+          },
+        }}
+        label="Username"
+      />
 
-      <div>
+      {/* <div>
         <label>
           Password
           <input {...passwordProps} />
         </label>
-      </div>
+      </div> */}
 
-      <button type="submit">Login</button>
-    </form>
+      <TextField
+        slotProps={{
+          htmlInput: {
+            type: 'password',
+            value: passwordProps.value,
+            onChange: passwordProps.onChange,
+          },
+        }}
+        label="Password"
+      />
+
+      <Button type="submit" variant="contained">
+        Login
+      </Button>
+    </Box>
   );
 
   // ---------- Theming ----------

@@ -1,7 +1,5 @@
-import { useState } from 'react';
 // https://vite.dev/guide/features#css-modules
 import styles from './Blog.module.css';
-import { useLikeBlog } from '../../hooks/useBlogsQueries';
 import { Link } from '@tanstack/react-router';
 
 const Blog = ({ blog }) => {
