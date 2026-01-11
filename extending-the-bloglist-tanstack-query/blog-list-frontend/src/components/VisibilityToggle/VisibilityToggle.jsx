@@ -1,5 +1,6 @@
 import { useState, useImperativeHandle } from 'react';
 import styles from './VisibilityToggle.module.css';
+import Button from '@mui/material/Button';
 
 const VisibilityToggle = ({ children, buttonLabel, ref }) => {
   const [childrenVisibility, setChildrenVisibility] = useState(false);
@@ -14,12 +15,16 @@ const VisibilityToggle = ({ children, buttonLabel, ref }) => {
   return (
     <>
       <div className={childrenVisibility ? styles.hide : styles.visible}>
-        <button onClick={toggleChildrenVisibility}>{buttonLabel}</button>
+        <Button variant="contained" onClick={toggleChildrenVisibility}>
+          {buttonLabel}
+        </Button>
       </div>
 
       <div className={childrenVisibility ? styles.visible : styles.hide}>
         {children}
-        <button onClick={toggleChildrenVisibility}>Cancel</button>
+        <Button variant="outlined" onClick={toggleChildrenVisibility}>
+          Cancel
+        </Button>
       </div>
     </>
   );

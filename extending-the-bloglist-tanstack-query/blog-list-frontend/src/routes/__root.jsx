@@ -11,6 +11,14 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useDisplayNotification } from '../hooks/useDisplayNotification';
 import { useFormInput } from '../hooks/useFormInput';
 
+// Material UI imports
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { Link as MuiLink, Breadcrumbs, Button } from '@mui/material';
+
 // Variable to make sure useEffect only run once to check for existing user
 // https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
 let didInit = false;
@@ -91,18 +99,18 @@ const RootLayout = () => {
   // ---------- Login Form ----------
   const loginForm = () => (
     <form onSubmit={handleLogin}>
-      <h2>Log in to application</h2>
+      <Typography variant="h3">Log in to application</Typography>
 
       <div>
         <label>
-          username
+          Username
           <input {...usernameProps} />
         </label>
       </div>
 
       <div>
         <label>
-          password
+          Password
           <input {...passwordProps} />
         </label>
       </div>
@@ -111,32 +119,66 @@ const RootLayout = () => {
     </form>
   );
 
+  // ---------- Theming ----------
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+
   return (
     <>
-      <div>
-        <h1>Blog App</h1>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline enableColorScheme />
+        <Container maxWidth="md">
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h1" sx={{ marginBottom: 4 }}>
+              BLOGS APP
+            </Typography>
+            {user && (
+              <div>
+                <Breadcrumbs aria-label="breadcrumb">
+                  <Link to="/" style={{ textDecoration: 'none' }}>
+                    <MuiLink
+                      underline="hover"
+                      color="inherit"
+                      sx={{ fontSize: 20 }}
+                    >
+                      Home
+                    </MuiLink>
+                  </Link>
+                  <Link to="/users" style={{ textDecoration: 'none' }}>
+                    <MuiLink
+                      underline="hover"
+                      color="inherit"
+                      sx={{ fontSize: 20 }}
+                    >
+                      Users
+                    </MuiLink>
+                  </Link>
+                  {user && (
+                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                      <Typography variant="body1">
+                        "{user.name}" is logged in.
+                      </Typography>
+                      <Button variant="outlined" onClick={handleLogout}>
+                        Log out
+                      </Button>
+                    </Box>
+                  )}
+                </Breadcrumbs>
+                <hr />
+              </div>
+            )}
+          </Box>
+          {notification.message && <Notification />}
+          {!user && loginForm()}
 
-        {user && (
-          <div>
-            <Link to="/">Home</Link>
-            <Link to="/users">Users</Link>
-            <hr />
-          </div>
-        )}
-      </div>
-
-      {notification.message && <Notification />}
-      {!user && loginForm()}
-
-      {user && (
-        <div>
-          <span>{user.name} is logged in.</span>
-          <button onClick={handleLogout}>logout</button>
-        </div>
-      )}
-      {user && <Outlet />}
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
+          {user && <Outlet />}
+          <ReactQueryDevtools buttonPosition="top-right" />
+          <TanStackRouterDevtools />
+        </Container>
+      </ThemeProvider>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Input from './Input/Input';
+import Button from '@mui/material/Button';
 
 // https://medium.com/@ozhanli/passing-data-from-child-to-parent-components-in-react-e347ea60b1bb
 const BlogEditor = ({ createBlog }) => {
@@ -38,7 +39,9 @@ const BlogEditor = ({ createBlog }) => {
           Url
         </Input>
 
-        <button type='submit'>Create</button>
+        <Button variant="contained" type="submit">
+          Create
+        </Button>
       </form>
     </div>
   );

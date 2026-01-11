@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom/client';
 import { StrictMode } from 'react';
-import App from './App';
 import { NotificationContextProvider } from './NotificationContextProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserContextProvider } from './UserContextProvider';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import CssBaseline from '@mui/material/CssBaseline';
 
 // Create a client
 const queryClient = new QueryClient();

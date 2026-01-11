@@ -59,21 +59,6 @@ const App = () => {
     blogFormRef.current.toggleChildrenVisibility();
   };
 
-  // ---------- Delete Blog ----------
-  const handleDeleteBlog = (blogToDelete) => {
-    blogDelete.mutate(
-      { id: blogToDelete.id },
-      {
-        onSuccess: (deletedBlog) => {
-          displayNotification(`"${deletedBlog.title}" has been deleted`);
-        },
-        onError: (error) => {
-          displayNotification(error.message, true);
-        },
-      },
-    );
-  };
-
   // ---------- Blogs ----------
   const blogDisplay = () => (
     <div>
