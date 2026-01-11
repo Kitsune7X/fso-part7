@@ -1,5 +1,5 @@
 // https://vite.dev/guide/features#css-modules
-import styles from './Blog.module.css';
+
 import { Link } from '@tanstack/react-router';
 
 import { Card, CardContent, Link as MuiLink, Typography } from '@mui/material';

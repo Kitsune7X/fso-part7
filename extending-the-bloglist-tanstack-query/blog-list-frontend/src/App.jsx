@@ -33,8 +33,6 @@ const App = () => {
 
   const blogMutation = useCreateBlog();
 
-  const blogDelete = useDeleteBlog();
-
   if (blogQueryPending) {
     return <h1>Loading...</h1>;
   }

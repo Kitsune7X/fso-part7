@@ -110,12 +110,6 @@ const RootLayout = () => {
     >
       <Typography variant="h3">Log in to application</Typography>
 
-      {/* <div>
-        <label>
-          Username
-          <input {...usernameProps} />
-        </label>
-      </div> */}
       <TextField
         slotProps={{
           htmlInput: {

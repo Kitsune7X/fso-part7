@@ -4,7 +4,6 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import pluginQuery from '@tanstack/eslint-plugin-query';
-import { routeTree } from './src/routeTree.gen';
 
 export default [
   { ignores: ['dist'] },
