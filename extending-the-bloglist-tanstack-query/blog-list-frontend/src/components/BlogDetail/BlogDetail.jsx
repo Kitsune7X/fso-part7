@@ -136,5 +136,3 @@ const BlogDetail = ({ blog }) => {
 };
 
 export default BlogDetail;
-
-// TODO: Add `Add Comment` and `Delete comment` functionality
