@@ -7,6 +7,7 @@ import {
 import blogService from '../services/blogs';
 import { blogsQueryOptions } from '../blogsQueryOptions';
 import { blogQueryOption } from '../blogQueryOptions';
+import { useNavigate } from '@tanstack/react-router';
 
 export const useBlogsQuery = () => {
   return useQuery(blogsQueryOptions);
@@ -36,21 +37,30 @@ export const useLikeBlog = () => {
   return useMutation({
     mutationFn: ({ blog, id }) => blogService.update(blog, id),
     onSuccess: (updatedBlog) => {
-      queryClient.setQueryData(['blogs'], (oldData) =>
-        oldData.map((b) =>
-          b.id === updatedBlog.id ? { ...b, likes: updatedBlog.likes } : b,
-        ),
+      // Update the cache for the single blog since the blogs list
+      // does not need to display the likes anymore
+      queryClient.setQueryData(
+        ['blogs', { blogId: updatedBlog.id }],
+        updatedBlog,
       );
+
+      // queryClient.setQueryData(['blogs'], (oldData) =>
+      //   oldData.map((b) =>
+      //     b.id === updatedBlog.id ? { ...b, likes: updatedBlog.likes } : b,
+      //   ),
+      // );
     },
   });
 };
 
 export const useDeleteBlog = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: ({ id }) => blogService.remove(id),
     onSuccess: (deletedBlog) => {
+      navigate({ to: '/blogs' });
       queryClient.setQueryData(['blogs'], (oldData) =>
         oldData.filter((b) => b.id !== deletedBlog.id),
       );
