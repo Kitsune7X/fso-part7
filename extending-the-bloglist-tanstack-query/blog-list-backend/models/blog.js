@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
+const commentSchema = new Schema({
+  comment: String,
+});
+
 const blogSchema = new Schema({
   title: {
     type: String,
@@ -22,7 +26,7 @@ const blogSchema = new Schema({
     ref: 'User',
   },
   comments: {
-    type: [String],
+    type: [commentSchema],
     required: false,
   },
 });

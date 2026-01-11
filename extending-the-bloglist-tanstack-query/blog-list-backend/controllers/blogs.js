@@ -51,8 +51,7 @@ blogRouter.post('/', userExtractor, requireUser, async (req, res) => {
     url: body.url,
     likes: body.likes || 0,
     user: user._id,
-    // TODO: Remove this
-    comments: ['WTF!', 'FUCK!', 'SHIT!'],
+    comments: [],
   });
 
   const savedBlog = await blog.save();
@@ -76,7 +75,7 @@ blogRouter.get('/:id', async (req, res) => {
   const id = req.params.id;
 
   const blog = await Blog.findById(id);
-  console.log(blog);
+  // console.log(blog);
 
   if (!blog) {
     res.status(404).json({ error: 'Non exist blog' });
@@ -136,6 +135,47 @@ blogRouter.put('/:id', userExtractor, requireUser, async (req, res) => {
   return res.status(400).end();
 });
 
-export default blogRouter;
+// ---------- Add comment for blog ----------
+blogRouter.patch('/:id/comments', async (req, res) => {
+  const id = req.params.id;
 
-// TODO: Add comment handling routing
+  const commentToAdd = req.body;
+
+  if (!commentToAdd) {
+    return res.status(400).json({ error: 'Comment missing' });
+  }
+
+  // https://www.mongodb.com/docs/manual/reference/operator/update/push/
+  // Using $push (update operator) to append comment to comments array
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    id,
+    { $push: { comments: commentToAdd } },
+    { new: true, runValidators: true },
+  );
+
+  return res.status(200).json(updatedBlog);
+});
+
+// ---------- Delete comment for blog ----------
+blogRouter.patch('/:blogId/comments/:commentId', async (req, res) => {
+  const blogId = req.params.blogId;
+  const commentId = req.params.commentId;
+
+  // https://www.mongodb.com/docs/manual/reference/operator/update/pull/
+  // Use $pull operator to delete comment from comments array
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    blogId,
+    {
+      $pull: { comments: { _id: commentId } },
+    },
+    { new: true, runValidators: true },
+  );
+
+  if (!updatedBlog) {
+    return res.status(400).json({ error: 'Failed to delete comment' });
+  }
+
+  return res.status(200).json(updatedBlog);
+});
+
+export default blogRouter;
