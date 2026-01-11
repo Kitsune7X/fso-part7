@@ -82,12 +82,7 @@ const App = () => {
         {blogs
           ?.sort((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              displayNotification={displayNotification}
-              handleDeleteBlog={handleDeleteBlog}
-            />
+            <Blog key={blog.id} blog={blog} />
           ))}
       </div>
     </div>
@@ -108,5 +103,3 @@ const App = () => {
 };
 
 export default App;
-
-// TODO: Add Link to view single blog

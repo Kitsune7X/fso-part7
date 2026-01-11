@@ -130,7 +130,7 @@ const RootLayout = () => {
 
       {user && (
         <div>
-          <p>{user.name} is logged in.</p>
+          <span>{user.name} is logged in.</span>
           <button onClick={handleLogout}>logout</button>
         </div>
       )}
