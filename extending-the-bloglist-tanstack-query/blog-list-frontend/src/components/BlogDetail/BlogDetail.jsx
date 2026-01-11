@@ -61,6 +61,12 @@ const BlogDetail = ({ blog }) => {
         )}
       </div>
       <p>Added by {blog.author}</p>
+      <h3>Comments</h3>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li key={comment}>{comment}</li>
+        ))}
+      </ul>
     </>
   );
 };

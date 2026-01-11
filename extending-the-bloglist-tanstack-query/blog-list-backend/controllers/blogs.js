@@ -51,6 +51,8 @@ blogRouter.post('/', userExtractor, requireUser, async (req, res) => {
     url: body.url,
     likes: body.likes || 0,
     user: user._id,
+    // TODO: Remove this
+    comments: ['WTF!', 'FUCK!', 'SHIT!'],
   });
 
   const savedBlog = await blog.save();
@@ -135,3 +137,5 @@ blogRouter.put('/:id', userExtractor, requireUser, async (req, res) => {
 });
 
 export default blogRouter;
+
+// TODO: Add comment handling routing
