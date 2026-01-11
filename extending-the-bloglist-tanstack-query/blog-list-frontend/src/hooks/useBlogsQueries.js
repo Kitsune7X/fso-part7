@@ -65,6 +65,39 @@ export const useDeleteBlog = () => {
         oldData.filter((b) => b.id !== deletedBlog.id),
       );
     },
-    onError: (error) => console.log(error),
+    onError: (error) => console.log(error.message),
+  });
+};
+
+export const useAddBlogComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ comment, id }) => blogService.addComment(comment, id),
+    onSuccess: (updatedBlog) => {
+      queryClient.setQueryData(
+        ['blogs', { blogId: updatedBlog.id }],
+        updatedBlog,
+      );
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+};
+
+export const useDeleteBlogComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ blogId, commentId }) =>
+      blogService.deleteComment(blogId, commentId),
+    onSuccess: (updatedBlog) => {
+      queryClient.setQueryData(
+        ['blogs', { blogId: updatedBlog.id }],
+        updatedBlog,
+      );
+    },
+    onError: (error) => console.log(error.message),
   });
 };

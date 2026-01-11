@@ -1,9 +1,21 @@
-import { useLikeBlog, useDeleteBlog } from '../../hooks/useBlogsQueries';
+import {
+  useLikeBlog,
+  useDeleteBlog,
+  useAddBlogComment,
+  useDeleteBlogComment,
+} from '../../hooks/useBlogsQueries';
 import { useDisplayNotification } from '../../hooks/useDisplayNotification';
+import { useFormInput } from '../../hooks/useFormInput';
 
 const BlogDetail = ({ blog }) => {
   const blogLikeMutation = useLikeBlog();
   const blogDeleteMutation = useDeleteBlog();
+
+  const blogAddCommentMutation = useAddBlogComment();
+  const blogDeleteCommentMutation = useDeleteBlogComment();
+
+  const commentInput = useFormInput('text');
+  const { resetValue: resetComment, ...commentProps } = commentInput;
 
   const displayNotification = useDisplayNotification();
 
@@ -38,6 +50,36 @@ const BlogDetail = ({ blog }) => {
     );
   };
 
+  const handleAddComment = (e) => {
+    e.preventDefault();
+
+    const comment = { comment: commentProps.value };
+
+    // Mutate the blogs `comments` array with useMutation
+    blogAddCommentMutation.mutate(
+      { comment, id: blog.id },
+      {
+        onSuccess: () => {
+          resetComment();
+          displayNotification('Comment added');
+        },
+        onError: (error) => {
+          displayNotification(error.message, true);
+        },
+      },
+    );
+  };
+
+  const handleDeleteComment = (commentId) => {
+    blogDeleteCommentMutation.mutate(
+      { blogId: blog.id, commentId },
+      {
+        onSuccess: () => displayNotification('Comment deleted'),
+        onError: (error) => displayNotification(error.message, true),
+      },
+    );
+  };
+
   return (
     <>
       <h2>{blog.title}</h2>
@@ -56,15 +98,25 @@ const BlogDetail = ({ blog }) => {
             }}
             type="button"
           >
-            Remove
+            Delete Blog
           </button>
         )}
       </div>
       <p>Added by {blog.author}</p>
       <h3>Comments</h3>
+      <form onSubmit={handleAddComment}>
+        <input {...commentProps} />
+        <button type="submit">Add comment</button>
+      </form>
+
       <ul>
         {blog.comments.map((c) => (
-          <li key={c.id}>{c.comment}</li>
+          <li key={c._id}>
+            {c.comment}{' '}
+            <button type="button" onClick={() => handleDeleteComment(c._id)}>
+              Delete comment
+            </button>
+          </li>
         ))}
       </ul>
     </>
@@ -72,3 +124,5 @@ const BlogDetail = ({ blog }) => {
 };
 
 export default BlogDetail;
+
+// TODO: Add `Add Comment` and `Delete comment` functionality

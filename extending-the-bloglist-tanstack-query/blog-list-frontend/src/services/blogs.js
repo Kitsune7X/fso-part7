@@ -69,4 +69,41 @@ const update = async (update, id) => {
   return response.data;
 };
 
-export default { getAll, getBlog, create, update, remove, setToken };
+// ---------- Add comment for a blog ----------
+const addComment = async (comment, blogId) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const response = await axios.patch(
+    `${baseUrl}/${blogId}/comments`,
+    comment,
+    config,
+  );
+
+  return response.data;
+};
+
+// ---------- Delete comment for a blog ----------
+const deleteComment = async (blogId, commentId) => {
+  // https://github.com/axios/axios
+  // Custom config with axios
+  const response = await axios({
+    url: `${baseUrl}/${blogId}/comments/${commentId}`,
+    method: 'patch',
+    headers: { Authorization: token },
+  });
+
+  return response.data;
+};
+
+export default {
+  getAll,
+  getBlog,
+  create,
+  update,
+  remove,
+  setToken,
+  addComment,
+  deleteComment,
+};
