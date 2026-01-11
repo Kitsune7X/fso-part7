@@ -14,6 +14,23 @@ const getAll = async () => {
   return response.data;
 };
 
+// Get a single blog --------------------------------------------------------------
+const getBlog = async (blogId) => {
+  console.info(`Fetching blog with id ${blogId}`);
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  try {
+    const response = await axios.get(`${baseUrl}/${blogId}`);
+
+    return response.data;
+  } catch (error) {
+    if (error.status === 404) {
+      throw new Error(`Blog with ID ${blogId} not found`);
+    }
+    throw error;
+  }
+};
+
 // Create New Blog --------------------------------------------------------------
 const create = async (newBlog) => {
   const config = {
@@ -52,4 +69,4 @@ const update = async (update, id) => {
   return response.data;
 };
 
-export default { getAll, create, update, remove, setToken };
+export default { getAll, getBlog, create, update, remove, setToken };

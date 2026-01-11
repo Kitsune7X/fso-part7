@@ -1,9 +1,19 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import blogService from '../services/blogs';
 import { blogsQueryOptions } from '../blogsQueryOptions';
+import { blogQueryOption } from '../blogQueryOptions';
 
 export const useBlogsQuery = () => {
   return useQuery(blogsQueryOptions);
+};
+
+export const useBlogQuery = (blogId) => {
+  return useSuspenseQuery(blogQueryOption(blogId));
 };
 
 export const useCreateBlog = () => {

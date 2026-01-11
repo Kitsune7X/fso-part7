@@ -8,6 +8,7 @@ export const Route = createFileRoute('/users/$userId')({
     return queryClient.ensureQueryData(userQueryOptions(userId));
   },
   component: User,
+  pendingComponent: () => <h3>Loading user info...</h3>,
 });
 
 const User = () => {
@@ -17,10 +18,10 @@ const User = () => {
 
   return (
     <>
-      <h2>{user?.name}</h2>
+      <h2>{user.name}</h2>
       <h3>Added blogs</h3>
       <ul>
-        {user?.blogs?.map((b) => (
+        {user.blogs.map((b) => (
           <li key={b.id}>{b.title}</li>
         ))}
       </ul>

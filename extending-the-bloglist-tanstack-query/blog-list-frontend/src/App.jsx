@@ -108,3 +108,5 @@ const App = () => {
 };
 
 export default App;
+
+// TODO: Add Link to view single blog

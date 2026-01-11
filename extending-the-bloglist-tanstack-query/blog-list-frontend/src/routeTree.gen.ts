@@ -12,11 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestRouteImport } from './routes/test'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as UsersRouteRouteImport } from './routes/users.route'
+import { Route as BlogsRouteRouteImport } from './routes/blogs.route'
 import { Route as AppRouteRouteImport } from './routes/app.route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
+import { Route as BlogsIndexRouteImport } from './routes/blogs.index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
+import { Route as BlogsBlogIdRouteImport } from './routes/blogs.$blogId'
 import { Route as AppUsersRouteImport } from './routes/app.users'
 
 const TestRoute = TestRouteImport.update({
@@ -34,6 +37,11 @@ const UsersRouteRoute = UsersRouteRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogsRouteRoute = BlogsRouteRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/app',
   path: '/app',
@@ -49,6 +57,11 @@ const UsersIndexRoute = UsersIndexRouteImport.update({
   path: '/',
   getParentRoute: () => UsersRouteRoute,
 } as any)
+const BlogsIndexRoute = BlogsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogsRouteRoute,
+} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -59,6 +72,11 @@ const UsersUserIdRoute = UsersUserIdRouteImport.update({
   path: '/$userId',
   getParentRoute: () => UsersRouteRoute,
 } as any)
+const BlogsBlogIdRoute = BlogsBlogIdRouteImport.update({
+  id: '/$blogId',
+  path: '/$blogId',
+  getParentRoute: () => BlogsRouteRoute,
+} as any)
 const AppUsersRoute = AppUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -68,12 +86,15 @@ const AppUsersRoute = AppUsersRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
+  '/blogs': typeof BlogsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
   '/app/users': typeof AppUsersRoute
+  '/blogs/$blogId': typeof BlogsBlogIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/app/': typeof AppIndexRoute
+  '/blogs/': typeof BlogsIndexRoute
   '/users/': typeof UsersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -81,20 +102,25 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
   '/app/users': typeof AppUsersRoute
+  '/blogs/$blogId': typeof BlogsBlogIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/app': typeof AppIndexRoute
+  '/blogs': typeof BlogsIndexRoute
   '/users': typeof UsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
+  '/blogs': typeof BlogsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/test': typeof TestRoute
   '/app/users': typeof AppUsersRoute
+  '/blogs/$blogId': typeof BlogsBlogIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/app/': typeof AppIndexRoute
+  '/blogs/': typeof BlogsIndexRoute
   '/users/': typeof UsersIndexRoute
 }
 export interface FileRouteTypes {
@@ -102,12 +128,15 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/blogs'
     | '/users'
     | '/about'
     | '/test'
     | '/app/users'
+    | '/blogs/$blogId'
     | '/users/$userId'
     | '/app/'
+    | '/blogs/'
     | '/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -115,25 +144,31 @@ export interface FileRouteTypes {
     | '/about'
     | '/test'
     | '/app/users'
+    | '/blogs/$blogId'
     | '/users/$userId'
     | '/app'
+    | '/blogs'
     | '/users'
   id:
     | '__root__'
     | '/'
     | '/app'
+    | '/blogs'
     | '/users'
     | '/about'
     | '/test'
     | '/app/users'
+    | '/blogs/$blogId'
     | '/users/$userId'
     | '/app/'
+    | '/blogs/'
     | '/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRouteRoute: typeof AppRouteRouteWithChildren
+  BlogsRouteRoute: typeof BlogsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   TestRoute: typeof TestRoute
@@ -162,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blogs': {
+      id: '/blogs'
+      path: '/blogs'
+      fullPath: '/blogs'
+      preLoaderRoute: typeof BlogsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app': {
       id: '/app'
       path: '/app'
@@ -183,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIndexRouteImport
       parentRoute: typeof UsersRouteRoute
     }
+    '/blogs/': {
+      id: '/blogs/'
+      path: '/'
+      fullPath: '/blogs/'
+      preLoaderRoute: typeof BlogsIndexRouteImport
+      parentRoute: typeof BlogsRouteRoute
+    }
     '/app/': {
       id: '/app/'
       path: '/'
@@ -196,6 +245,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/users/$userId'
       preLoaderRoute: typeof UsersUserIdRouteImport
       parentRoute: typeof UsersRouteRoute
+    }
+    '/blogs/$blogId': {
+      id: '/blogs/$blogId'
+      path: '/$blogId'
+      fullPath: '/blogs/$blogId'
+      preLoaderRoute: typeof BlogsBlogIdRouteImport
+      parentRoute: typeof BlogsRouteRoute
     }
     '/app/users': {
       id: '/app/users'
@@ -221,6 +277,20 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
   AppRouteRouteChildren,
 )
 
+interface BlogsRouteRouteChildren {
+  BlogsBlogIdRoute: typeof BlogsBlogIdRoute
+  BlogsIndexRoute: typeof BlogsIndexRoute
+}
+
+const BlogsRouteRouteChildren: BlogsRouteRouteChildren = {
+  BlogsBlogIdRoute: BlogsBlogIdRoute,
+  BlogsIndexRoute: BlogsIndexRoute,
+}
+
+const BlogsRouteRouteWithChildren = BlogsRouteRoute._addFileChildren(
+  BlogsRouteRouteChildren,
+)
+
 interface UsersRouteRouteChildren {
   UsersUserIdRoute: typeof UsersUserIdRoute
   UsersIndexRoute: typeof UsersIndexRoute
@@ -238,6 +308,7 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRouteRoute: AppRouteRouteWithChildren,
+  BlogsRouteRoute: BlogsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   TestRoute: TestRoute,
